@@ -1,0 +1,528 @@
+/* ══════════════════════════════════════════════════════════════
+   莫蘭迪×宋代仕女 — 療癒東方美學配色
+   調色靈感：煙藕粉・青瓷霧・舊竹白・沉香灰
+   字體：ZCOOL XiaoWei（標題）+ Noto Serif SC（內文）
+   ══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;500&display=swap');
+
+:root {
+    /* 莫蘭迪東方色系 */
+    --bg-color: #e8e0d5;          /* 舊宣紙・暖米灰 */
+    --bg-secondary: #ddd5c8;      /* 雲母底・稍深 */
+    --card-bg: #f0ebe2;           /* 象牙白・帶溫度 */
+    --card-inner: #e4ddd3;        /* 內層卡片・一層羅紗 */
+
+    --text-main: #3d3530;         /* 墨硯深棕・不純黑 */
+    --text-muted: #8a7b6e;        /* 茶煙色・遠山感 */
+    --text-soft: #b5a898;         /* 霧面淡灰棕 */
+
+    --primary: #9e6b6b;           /* 暗藕紅・莫蘭迪胭脂 */
+    --primary-hover: #845555;
+    --primary-light: rgba(158, 107, 107, 0.12);
+
+    --success: #6b8f71;           /* 青瓷苔綠 */
+    --success-hover: #587a5d;
+
+    --accent: #b89a6a;            /* 舊金・非亮金、像舊帛書 */
+    --accent-light: rgba(184, 154, 106, 0.18);
+    --accent-soft: #d4bc91;       /* 淡金・用於裝飾細節 */
+
+    --border: #cec4b6;            /* 細描線・宋畫勾勒感 */
+    --border-soft: #ddd7ce;       /* 更淡的分隔線 */
+
+    --shadow-warm: rgba(100, 75, 55, 0.12);
+    --shadow-deep: rgba(80, 60, 45, 0.20);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── 底紋：細緻布紋感，模擬宣紙肌理 ── */
+body {
+    font-family: 'Noto Serif SC', 'Noto Serif TC', serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.75;
+    padding: 28px 14px;
+    background-image:
+        /* 橫向細紋 */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 22px,
+            rgba(160, 140, 120, 0.04) 22px,
+            rgba(160, 140, 120, 0.04) 23px
+        ),
+        /* 直向細紋 */
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 22px,
+            rgba(160, 140, 120, 0.03) 22px,
+            rgba(160, 140, 120, 0.03) 23px
+        ),
+        /* 中心暈染 */
+        radial-gradient(ellipse at 50% 30%, rgba(240, 230, 215, 0.6) 0%, transparent 70%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ══ Header：如仕女卷軸展開 ══ */
+header {
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+    padding: 28px 0 20px;
+}
+
+/* 頂部裝飾橫線，模擬卷軸端頭 */
+header::before,
+header::after {
+    content: '';
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+header::before { margin-bottom: 20px; }
+header::after  { margin-top: 20px; }
+
+header h1 {
+    font-family: 'ZCOOL XiaoWei', 'Ma Shan Zheng', serif;
+    font-size: 2.8rem;
+    font-weight: 400;           /* 小微體天生就有重量感，不需加粗 */
+    color: var(--primary);
+    letter-spacing: 0.15em;
+    text-shadow:
+        1px 1px 0 rgba(255,255,255,0.6),
+        0 2px 8px rgba(158, 107, 107, 0.2);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+/* 菱形裝飾符，像宮燈墜子 */
+header h1::before,
+header h1::after {
+    content: '◆';
+    font-size: 0.5em;
+    color: var(--accent-soft);
+    vertical-align: middle;
+    margin: 0 0.5em;
+    opacity: 0.7;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    font-style: normal;         /* 移除italic，改用字距和顏色傳達氣質 */
+}
+
+/* ══ Card：描金邊宮燈紙盒感 ══ */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 4px;         /* 宋代器物：方正微圓，不是現代大圓角 */
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow:
+        0 2px 8px var(--shadow-warm),
+        0 8px 24px var(--shadow-deep),
+        inset 0 0 0 1px rgba(255,255,255,0.5);  /* 內光邊，如漆器 */
+    border: 1px solid var(--border);
+    position: relative;
+    /* 四角花紋：用偽元素做角飾 */
+}
+
+/* 卡片四角裝飾，宋代回紋簡化版 */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--border-soft);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+h2 {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 18px;
+    padding-left: 14px;
+    color: var(--text-main);
+    letter-spacing: 0.1em;
+    position: relative;
+}
+
+/* 左側裝飾：雙線書籤感 */
+h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 80%;
+    background: linear-gradient(180deg, var(--accent), var(--primary));
+    border-radius: 2px;
+}
+
+/* ══ 表單元素 ══ */
+.form-group {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 13px 16px;
+    background-color: var(--card-inner);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-family: 'Noto Serif SC', serif;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-soft);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow:
+        inset 0 1px 3px rgba(0,0,0,0.06),
+        0 0 0 3px var(--accent-light);
+}
+
+/* ══ 竹筒搖卦區域 ══ */
+.divine-container {
+    text-align: center;
+    background-color: var(--card-inner);
+    padding: 24px 20px;
+    border-radius: 3px;
+    border: 1px dashed var(--border);
+    position: relative;
+}
+
+/* 角落裝飾點 */
+.divine-container::before,
+.divine-container::after {
+    content: '✦';
+    position: absolute;
+    font-size: 0.6rem;
+    color: var(--accent-soft);
+    opacity: 0.5;
+}
+.divine-container::before { top: 8px; left: 12px; }
+.divine-container::after  { bottom: 8px; right: 12px; }
+
+.hint {
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin-bottom: 18px;
+    letter-spacing: 0.05em;
+    font-weight: 300;
+}
+
+.dice-cup {
+    width: 110px;
+    height: 140px;
+    margin: 0 auto;
+    background: linear-gradient(160deg, var(--primary), #7d5050);
+    border: 3px solid var(--accent-soft);
+    border-radius: 8px 8px 28px 28px;
+    box-shadow:
+        0 6px 20px var(--shadow-deep),
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 -2px 4px rgba(0,0,0,0.15);
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    user-select: none;
+    touch-action: none;
+    position: relative;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.dice-cup:active {
+    cursor: grabbing;
+    box-shadow:
+        0 10px 30px var(--shadow-deep),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.cup-body {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.dice-container {
+    display: flex;
+    gap: 8px;
+    font-size: 1.7rem;
+    color: var(--accent-soft);
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+}
+
+/* ── 搖晃動畫（輕柔化） ── */
+.shaking {
+    animation: shakeEffect 0.18s infinite;
+}
+
+@keyframes shakeEffect {
+    0%   { transform: translate(3px, 1.5px) rotate(2.5deg); }
+    50%  { transform: translate(-2.5px, -1.5px) rotate(-2.5deg); }
+    100% { transform: translate(2px, 3px) rotate(1.5deg); }
+}
+
+/* ══ 結果版面 ══ */
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 480px) {
+    .result-grid { grid-template-columns: 1.2fr 1fr; }
+}
+
+.info-panel p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: var(--text-main);
+    line-height: 1.8;
+}
+
+.hexagram-names {
+    margin-top: 15px;
+    border-top: 1px dashed var(--border);
+    padding-top: 15px;
+}
+
+.hexagram-names p {
+    margin-bottom: 12px;
+}
+
+/* ── Badge：仕女腰牌感 ── */
+.badge {
+    display: inline-block;
+    padding: 3px 11px;
+    border-radius: 2px;
+    background-color: var(--primary-light);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-size: 0.88em;
+    font-weight: 400;
+    margin-left: 8px;
+    letter-spacing: 0.04em;
+}
+
+.bg-change {
+    background-color: rgba(158, 107, 107, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.bg-info {
+    background-color: var(--accent-light);
+    border-color: var(--accent);
+    color: #7a6040;
+}
+
+/* ══ 卦象視覺面板 ══ */
+.visual-panel {
+    background-color: var(--card-inner);
+    border-radius: 3px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.visual-panel h3 {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+}
+
+.diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.line-item {
+    font-family: monospace;
+    font-size: 1.25rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.moving-line {
+    color: var(--accent);
+    text-shadow: 0 0 6px rgba(184, 154, 106, 0.5);
+}
+
+/* ── 爻辭文字框 ── */
+.line-text-box {
+    background-color: var(--card-inner);
+    padding: 16px;
+    border-radius: 3px;
+    border-left: 3px solid var(--accent);
+    border-right: 1px solid var(--border-soft);
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.line-text-box h4 {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+}
+
+/* ── Textarea ── */
+textarea {
+    width: 100%;
+    background-color: var(--card-inner);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 13px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.92rem;
+    resize: none;
+    margin-bottom: 16px;
+    line-height: 1.8;
+    transition: border-color 0.2s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+/* ══ AI 連結區 ══ */
+.ai-links {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 16px;
+}
+
+.ai-links p {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+    font-weight: 300;
+}
+
+.ai-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.ai-btn {
+    text-align: center;
+    text-decoration: none;
+    padding: 11px 5px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px var(--shadow-warm);
+}
+
+.ai-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* 莫蘭迪調色版 AI 按鈕 */
+.chatgpt { background-color: #6b9e85; border: 1px solid #89b8a0; color: #f0ebe2; }
+.claude  { background-color: #9e8060; border: 1px solid #b89a72; color: #f0ebe2; }
+.gemini  { background-color: #7380a0; border: 1px solid #8f9dc0; color: #f0ebe2; }
+
+/* ── 按鈕：成功/主要操作 ── */
+.btn-success {
+    background: linear-gradient(135deg, var(--success), #5a8060);
+    color: var(--card-bg);
+    border: 1px solid var(--accent-soft);
+    border-radius: 3px;
+    padding: 12px 24px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.25s, box-shadow 0.25s, transform 0.1s;
+    box-shadow: 0 3px 10px var(--shadow-warm);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--success-hover), #4e7054);
+    box-shadow: 0 5px 16px var(--shadow-deep);
+    transform: translateY(-1px);
+}
+
+.hidden { display: none !important; }
+
+/* ══ Toast ══ */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--success);
+    border: 1px solid var(--accent-soft);
+    color: var(--card-bg);
+    padding: 10px 24px;
+    border-radius: 20px;
+    opacity: 0;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+    font-family: 'Noto Serif SC', serif;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 6px 20px var(--shadow-deep);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}

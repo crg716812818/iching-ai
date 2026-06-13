@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI I Ching Prompt Generator | 數位易經算卦器</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☯️ 易經 AI 占卜聖殿</h1>
+            <p class="subtitle">揲蓍布卦，感格神明。一鍵生成大語言模型深度解卦 Prompt</p>
+        </header>
+
+        <section class="card input-section">
+            <h2>一、注入所求之事</h2>
+            <div class="form-group">
+                <label for="question">請在下方誠心輸入你心中所求之疑問：</label>
+                <input type="text" id="question" placeholder="心誠則靈，請輸入具體問題..." autocomplete="off">
+            </div>
+            
+            <div class="divine-container">
+                <p class="hint">【儀式感體驗】請用滑鼠或手指按住下方法器「用力搖晃」，釋放後即可起卦</p>
+                <div id="dice-cup" class="dice-cup">
+                    <div class="cup-body">🏮</div>
+                    <div class="dice-container">
+                        <div class="die">⚀</div>
+                        <div class="die">⚂</div>
+                        <div class="die">⚄</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-section" class="card result-section hidden">
+            <h2>二、啟卦天機</h2>
+            
+            <div class="result-grid">
+                <div class="info-panel">
+                    <p><strong>上卦：</strong><span id="res-upper"></span></p>
+                    <p><strong>下卦：</strong><span id="res-lower"></span></p>
+                    <p><strong>動爻：</strong><span id="res-moving"></span></p>
+                    <div class="hexagram-names">
+                        <p><strong>本卦：</strong><span id="hex-main" class="badge"></span></p>
+                        <p><strong>變卦：</strong><span id="hex-changed" class="badge bg-change"></span></p>
+                        <p><strong>互卦：</strong><span id="hex-mutual" class="badge bg-info"></span></p>
+                        <p><strong>錯卦：</strong><span id="hex-opposite" class="badge bg-info"></span></p>
+                        <p><strong>綜卦：</strong><span id="hex-reversed" class="badge bg-info"></span></p>
+                    </div>
+                </div>
+                
+                <div class="visual-panel">
+                    <h3>本卦聖象圖</h3>
+                    <div id="hexagram-diagram" class="diagram"></div>
+                </div>
+            </div>
+
+            <div class="line-text-box">
+                <h4>動爻爻辭指引</h4>
+                <p id="res-line-text">正在讀取爻辭...</p>
+            </div>
+        </section>
+
+        <section id="prompt-section" class="card prompt-section hidden">
+            <h2>三、AI 解卦 Prompt 產生器</h2>
+            <p class="tip">下方經文已整合您的卦象，複製後即可貼至大語言模型進行深度解析。</p>
+            
+            <textarea id="prompt-content" readonly rows="12"></textarea>
+            
+            <div class="action-buttons">
+                <button id="copy-btn" class="btn btn-success">📋 複製完整 Prompt</button>
+            </div>
+
+            <div class="ai-links">
+                <p>快速前往 AI 平台：</p>
+                <div class="ai-grid">
+                    <a href="https://chatgpt.com/" target="_blank" class="ai-btn chatgpt">Open ChatGPT</a>
+                    <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Open Claude</a>
+                    <a href="https://gemini.google.com/" target="_blank" class="ai-btn gemini">Open Gemini</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="toast" class="toast">複製成功！</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
