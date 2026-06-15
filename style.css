@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════
-   莫蘭迪×宋代仕女 — 療癒東方美學配色
+   莫蘭迪×宋代仕女 — 療癒東方美學配色（互動優化版）
    調色靈感：煙藕粉・青瓷霧・舊竹白・沉香灰
    字體：ZCOOL XiaoWei（標題）+ Noto Serif SC（內文）
    ══════════════════════════════════════════════════════════════ */
@@ -83,7 +83,6 @@ header {
     padding: 28px 0 20px;
 }
 
-/* 頂部裝飾橫線，模擬卷軸端頭 */
 header::before,
 header::after {
     content: '';
@@ -97,9 +96,9 @@ header::before { margin-bottom: 20px; }
 header::after  { margin-top: 20px; }
 
 header h1 {
-    font-family: 'ZCOOL XiaoWei', 'Ma Shan Zheng', serif;
+    font-family: 'ZCOOL XiaoWei', serif;
     font-size: 2.8rem;
-    font-weight: 400;           /* 小微體天生就有重量感，不需加粗 */
+    font-weight: 400;
     color: var(--primary);
     letter-spacing: 0.15em;
     text-shadow:
@@ -109,7 +108,6 @@ header h1 {
     line-height: 1.3;
 }
 
-/* 菱形裝飾符，像宮燈墜子 */
 header h1::before,
 header h1::after {
     content: '◆';
@@ -125,25 +123,22 @@ header h1::after {
     font-size: 0.9rem;
     font-weight: 300;
     letter-spacing: 0.08em;
-    font-style: normal;         /* 移除italic，改用字距和顏色傳達氣質 */
 }
 
-/* ══ Card：描金邊宮燈紙盒感 ══ */
+/* ══ Card ══ */
 .card {
     background-color: var(--card-bg);
-    border-radius: 4px;         /* 宋代器物：方正微圓，不是現代大圓角 */
+    border-radius: 4px;
     padding: 28px;
     margin-bottom: 24px;
     box-shadow:
         0 2px 8px var(--shadow-warm),
         0 8px 24px var(--shadow-deep),
-        inset 0 0 0 1px rgba(255,255,255,0.5);  /* 內光邊，如漆器 */
+        inset 0 0 0 1px rgba(255,255,255,0.5);
     border: 1px solid var(--border);
     position: relative;
-    /* 四角花紋：用偽元素做角飾 */
 }
 
-/* 卡片四角裝飾，宋代回紋簡化版 */
 .card::before {
     content: '';
     position: absolute;
@@ -164,7 +159,6 @@ h2 {
     position: relative;
 }
 
-/* 左側裝飾：雙線書籤感 */
 h2::before {
     content: '';
     position: absolute;
@@ -191,7 +185,8 @@ label {
     font-weight: 300;
 }
 
-input[type="text"] {
+/* ✨ 修正：將原本的 input[type="text"] 完美升級擴充為 textarea 問題輸入大方格 */
+textarea#question {
     width: 100%;
     padding: 13px 16px;
     background-color: var(--card-inner);
@@ -202,13 +197,15 @@ input[type="text"] {
     font-family: 'Noto Serif SC', serif;
     transition: border-color 0.25s, box-shadow 0.25s;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    line-height: 1.6;
+    resize: vertical;
 }
 
-input[type="text"]::placeholder {
+textarea#question::placeholder {
     color: var(--text-soft);
 }
 
-input[type="text"]:focus {
+textarea#question:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow:
@@ -226,7 +223,6 @@ input[type="text"]:focus {
     position: relative;
 }
 
-/* 角落裝飾點 */
 .divine-container::before,
 .divine-container::after {
     content: '✦';
@@ -239,11 +235,35 @@ input[type="text"]:focus {
 .divine-container::after  { bottom: 8px; right: 12px; }
 
 .hint {
-    font-size: 0.82rem;
-    color: var(--accent);
-    margin-bottom: 18px;
+    font-size: 1.05rem;
+    color: var(--primary);
+    margin-bottom: 4px;
     letter-spacing: 0.05em;
-    font-weight: 300;
+    font-weight: 500;
+}
+
+.sub-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* ✨ 修正：加入符合宋代美學的 iOS 實體搖晃功能授權按鈕 */
+.btn-motion {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 6px 14px;
+    border-radius: 3px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-motion:hover {
+    background-color: rgba(158, 107, 107, 0.25);
 }
 
 .dice-cup {
@@ -289,7 +309,6 @@ input[type="text"]:focus {
     filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
 }
 
-/* ── 搖晃動畫（輕柔化） ── */
 .shaking {
     animation: shakeEffect 0.18s infinite;
 }
@@ -329,7 +348,6 @@ input[type="text"]:focus {
     margin-bottom: 12px;
 }
 
-/* ── Badge：仕女腰牌感 ── */
 .badge {
     display: inline-block;
     padding: 3px 11px;
@@ -414,8 +432,8 @@ input[type="text"]:focus {
     letter-spacing: 0.08em;
 }
 
-/* ── Textarea ── */
-textarea {
+/* ── Prompt 輸出區文字框 ── */
+textarea#prompt-content {
     width: 100%;
     background-color: var(--card-inner);
     color: var(--text-main);
@@ -430,7 +448,7 @@ textarea {
     transition: border-color 0.2s;
 }
 
-textarea:focus {
+textarea#prompt-content:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-light);
@@ -474,18 +492,18 @@ textarea:focus {
     transform: translateY(-1px);
 }
 
-/* 莫蘭迪調色版 AI 按鈕 */
 .chatgpt { background-color: #6b9e85; border: 1px solid #89b8a0; color: #f0ebe2; }
 .claude  { background-color: #9e8060; border: 1px solid #b89a72; color: #f0ebe2; }
 .gemini  { background-color: #7380a0; border: 1px solid #8f9dc0; color: #f0ebe2; }
 
-/* ── 按鈕：成功/主要操作 ── */
+/* ── 按鈕 ── */
 .btn-success {
+    width: 100%;
     background: linear-gradient(135deg, var(--success), #5a8060);
     color: var(--card-bg);
     border: 1px solid var(--accent-soft);
     border-radius: 3px;
-    padding: 12px 24px;
+    padding: 14px 24px;
     font-family: 'Noto Serif SC', serif;
     font-size: 0.95rem;
     letter-spacing: 0.08em;
@@ -520,6 +538,7 @@ textarea:focus {
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
     z-index: 100;
     box-shadow: 0 6px 20px var(--shadow-deep);
+    pointer-events: none;
 }
 
 .toast.show {

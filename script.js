@@ -1,7 +1,3 @@
-// ==========================================
-// 1. 資料定義 (Trigrams & 完整 64 Hexagrams)
-// ==========================================
-
 const trigrams = {
     '111': { name: '乾', nature: '天' },
     '110': { name: '兌', nature: '澤' },
@@ -18,7 +14,7 @@ const hexagramsDatabase = {
     '坤坤': { number: 2,  name: '坤', fullName: '坤為地', judgment: '元亨，利牝馬之貞。' },
     '水雷': { number: 3,  name: '屯', fullName: '水雷屯', judgment: '元亨，利貞。勿用有攸往，利建侯。' },
     '山水': { number: 4,  name: '蒙', fullName: '山水蒙', judgment: '亨。匪我求童蒙，童蒙求我。' },
-    '水天': { number: 5,  name: '需', fullName: '水天需', judgment: '有孚，光亨，貞吉。利涉大川。' },
+    '水天': { number: 5,  name: '需', fullName: '水天需', judgment: '有孚，光亨，貞吉. 利涉大川。' },
     '天水': { number: 6,  name: '訟', fullName: '天水訟', judgment: '有孚，窒。惕中吉。終凶。' },
     '地水': { number: 7,  name: '師', fullName: '地水師', judgment: '貞，丈人吉，無咎。' },
     '水地': { number: 8,  name: '比', fullName: '水地比', judgment: '吉。原筮元永貞，無咎。' },
@@ -80,17 +76,12 @@ const hexagramsDatabase = {
     '火水': { number: 64, name: '未濟', fullName: '火水未濟', judgment: '亨，小狐濡尾，吝無攸利。' }
 };
 
-// ==========================================
-// 2. 爻辭與理數動態生成器
-// ==========================================
 function generateLineText(bits, movingLine, hexName) {
     const movingIndex = movingLine - 1;
     const isYang = bits[movingIndex] === 1;
-    
     const lowerBits = bits.slice(0, 3).join('');
     const upperBits = bits.slice(3, 6).join('');
     const natureKey = (trigrams[upperBits]?.nature || '坤') + (trigrams[lowerBits]?.nature || '坤');
-    
     const judgment = hexagramsDatabase[natureKey]?.judgment || '順應天時，利貞。';
     
     let lineTitle = '';
@@ -107,9 +98,6 @@ function generateLineText(bits, movingLine, hexName) {
 核心理數：此爻發動，提示事情在發展的第 ${movingLine} 階段發生關鍵變局，觸發後面變卦。`;
 }
 
-// ==========================================
-// 3. 核心算法 (精準比對自然象)
-// ==========================================
 function getTrigramsFromBits(bits) {
     const lowerBits = bits.slice(0, 3).join('');
     const upperBits = bits.slice(3, 6).join('');
@@ -124,74 +112,67 @@ function getTrigramsFromBits(bits) {
 function lookupHexagram(bits) {
     const { upper, lower, upperNature, lowerNature } = getTrigramsFromBits(bits);
     const key = upperNature + lowerNature;
-    if (hexagramsDatabase[key]) {
-        return hexagramsDatabase[key].fullName;
-    }
+    if (hexagramsDatabase[key]) return hexagramsDatabase[key].fullName;
     return `${upper}${lower}卦`;
 }
 
 // ==========================================
-// 4. 手指/滑鼠 互動式起卦邏輯 (新增)
+// 4. 核心互動控管區 (支援滑鼠、手指、手機實體搖晃)
 // ==========================================
 const diceCup = document.getElementById('dice-cup');
 const questionInput = document.getElementById('question');
 const resultSection = document.getElementById('result-section');
 const promptSection = document.getElementById('prompt-section');
+const motionBtn = document.getElementById('motion-btn');
 
 let isDragging = false;
 let startX, startY;
 let shakeCount = 0;
+let isShakingRealPhone = false;
 const diceSymbols = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
 
-// 監聽滑鼠與手勢按下
+// --- 互動 A：滑鼠 & 手指觸控拖曳搖晃 ---
 if (diceCup) {
-    diceCup.addEventListener('mousedown', startShake);
-    diceCup.addEventListener('touchstart', startShake);
+    diceCup.addEventListener('mousedown', startDragShake);
+    diceCup.addEventListener('touchstart', startDragShake, { passive: true });
 }
 
-window.addEventListener('mousemove', preserveShake);
-window.addEventListener('touchmove', preserveShake);
-window.addEventListener('mouseup', stopShake);
-window.addEventListener('touchend', stopShake);
+window.addEventListener('mousemove', preserveDragShake);
+window.addEventListener('touchmove', preserveDragShake, { passive: false });
+window.addEventListener('mouseup', stopDragShake);
+window.addEventListener('touchend', stopDragShake);
 
-function startShake(e) {
+function startDragShake(e) {
     const questionText = questionInput.value.trim();
     if (!questionText) {
-        alert('請先誠心輸入您想請示的問題，再行擺弄法器起卦喔！');
+        alert('請先誠心輸入您想請示的問題，並在心中默念一次，再起卦喔！');
         return;
     }
     isDragging = true;
     shakeCount = 0;
-    startX = e.clientX || e.touches[0].clientX;
-    startY = e.clientY || e.touches[0].clientY;
+    startX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    startY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
     diceCup.classList.add('shaking');
 }
 
-function preserveShake(e) {
+function preserveDragShake(e) {
     if (!isDragging) return;
     const currentX = e.clientX || (e.touches ? e.touches[0].clientX : startX);
     const currentY = e.clientY || (e.touches ? e.touches[0].clientY : startY);
     
-    // 計算拖曳移動量，轉化為骰子隨機滾動感
     const distance = Math.abs(currentX - startX) + Math.abs(currentY - startY);
     if (distance > 15) {
         shakeCount++;
-        // 隨機跳動骰子圖案
-        const diceDivs = diceCup.querySelectorAll('.die');
-        diceDivs.forEach(die => {
-            die.innerText = diceSymbols[Math.floor(Math.random() * 6)];
-        });
+        randomizeDiceVisuals();
         startX = currentX;
         startY = currentY;
     }
 }
 
-function stopShake() {
+function stopDragShake() {
     if (!isDragging) return;
     isDragging = false;
     diceCup.classList.remove('shaking');
-
-    // 只有當使用者搖晃次數足夠時才觸發開卦，提升儀式感
     if (shakeCount > 5) {
         executeDivination();
     } else {
@@ -199,9 +180,85 @@ function stopShake() {
     }
 }
 
-// 核心開卦與渲染邏輯
+function randomizeDiceVisuals() {
+    const diceDivs = diceCup.querySelectorAll('.die');
+    diceDivs.forEach(die => {
+        die.innerText = diceSymbols[Math.floor(Math.random() * 6)];
+    });
+}
+
+// --- 互動 B：手機實體重力搖晃感應 (Web DeviceMotion) ---
+let lastX = null, lastY = null, lastZ = null;
+const SHAKE_THRESHOLD = 15; // 搖晃速度閾值
+let realPhoneShakeTimer = null;
+
+// iOS 13+ 需要使用者點擊授權才能開啟陀螺儀
+if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+    motionBtn.classList.remove('hidden');
+    motionBtn.addEventListener('click', () => {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    motionBtn.classList.add('hidden');
+                    window.addEventListener('devicemotion', handleDeviceMotion, false);
+                }
+            })
+            .catch(console.error);
+    });
+} else {
+    // Android 或不需授權的裝置直接監聽
+    window.addEventListener('devicemotion', handleDeviceMotion, false);
+}
+
+function handleDeviceMotion(event) {
+    const questionText = questionInput.value.trim();
+    if (!questionText) return; // 沒打問題不觸發搖晃
+
+    const acceleration = event.accelerationIncludingGravity;
+    if (!acceleration) return;
+
+    let x = acceleration.x;
+    let y = acceleration.y;
+    let z = acceleration.z;
+
+    if (lastX === null) {
+        lastX = x; lastY = y; lastZ = z;
+        return;
+    }
+
+    let deltaX = Math.abs(x - lastX);
+    let deltaY = Math.abs(y - lastY);
+    let deltaZ = Math.abs(z - lastZ);
+
+    // 如果三軸的變化量超過閾值，代表使用者正在實體搖晃手機
+    if ((deltaX > SHAKE_THRESHOLD && deltaY > SHAKE_THRESHOLD) || 
+        (deltaX > SHAKE_THRESHOLD && deltaZ > SHAKE_THRESHOLD) || 
+        (deltaY > SHAKE_THRESHOLD && deltaZ > SHAKE_THRESHOLD)) {
+        
+        if (!isShakingRealPhone) {
+            isShakingRealPhone = true;
+            diceCup.classList.add('shaking');
+        }
+
+        randomizeDiceVisuals();
+
+        // 倒數計時：停止搖晃 1 秒後自動判定為收卦
+        clearTimeout(realPhoneShakeTimer);
+        realPhoneShakeTimer = setTimeout(() => {
+            isShakingRealPhone = false;
+            diceCup.classList.remove('shaking');
+            executeDivination();
+        }, 1000);
+    }
+
+    lastX = x; lastY = y; lastZ = z;
+}
+
+// --- 核心開卦與渲染邏輯 ---
 function executeDivination() {
     const questionText = questionInput.value.trim();
+    if (!questionText) return;
+
     const mainBits = [];
     for (let i = 0; i < 6; i++) {
         mainBits.push(Math.random() > 0.5 ? 1 : 0);
@@ -233,7 +290,6 @@ function executeDivination() {
     const lineNames = ['初', '二', '三', '四', '五', '上'];
     const movingLineChinese = `${lineNames[movingIndex]}爻`;
 
-    // 渲染資料到 UI
     document.getElementById('res-upper').innerText = upper;
     document.getElementById('res-lower').innerText = lower;
     document.getElementById('res-moving').innerText = movingLineChinese;
@@ -298,7 +354,7 @@ ${lineText}
 4. 建議行動
 5. 直接回答問題
 
-請用白話中文解釋，不要過度神秘化。`;
+請用白話中文很直接的解釋，不要過度神秘化。`;
 
     document.getElementById('prompt-content').value = generatedPrompt;
 
@@ -307,7 +363,7 @@ ${lineText}
     promptSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// --- 複製功能 ---
+// --- 一鍵複製功能 ---
 const copyBtn = document.getElementById('copy-btn');
 const toast = document.getElementById('toast');
 

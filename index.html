@@ -18,11 +18,15 @@
             <h2>一、注入所求之事</h2>
             <div class="form-group">
                 <label for="question">請在下方誠心輸入你心中所求之疑問：</label>
-                <input type="text" id="question" placeholder="心誠則靈，請輸入具體問題..." autocomplete="off">
+                <textarea id="question" rows="4" placeholder="心誠則靈，請輸入具體問題...（例如工作抉擇、感情走向、面試結果）" autocomplete="off"></textarea>
             </div>
             
             <div class="divine-container">
-                <p class="hint">【儀式感體驗】請用滑鼠或手指按住下方法器「用力搖晃」，釋放後即可起卦</p>
+                <p class="hint">【儀式感體驗】搖之前請在心中默念 1 次問題</p>
+                <p class="sub-hint">（手機用戶可直接「手握手機實體搖晃」，或用手指按住法器來回拖曳）</p>
+                
+                <button id="motion-btn" class="btn-motion hidden">點擊允許手機搖晃感應</button>
+
                 <div id="dice-cup" class="dice-cup">
                     <div class="cup-body">🏮</div>
                     <div class="dice-container">
