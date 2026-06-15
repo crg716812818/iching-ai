@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI I Ching Prompt Generator | 數位易經算卦器</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>☯️ 易經 AI 占卜聖殿</h1>
-            <p class="subtitle">揲蓍布卦，感格神明。一鍵生成大語言模型深度解卦 Prompt</p>
+            <!-- 運用 span 強制手機端完美斷句與換行 -->
+            <h1>
+                <span>☯️ 易經 AI</span>
+                <span>占卜聖殿</span>
+            </h1>
+            <p class="subtitle">
+                <span>揲蓍布卦，感格神明。</span>
+                <span>一鍵生成大語言模型深度解卦 Prompt</span>
+            </p>
         </header>
 
+        <!-- 一、問題輸入區 -->
         <section class="card input-section">
             <h2>一、注入所求之事</h2>
             <div class="form-group">
@@ -21,6 +29,7 @@
                 <textarea id="question" rows="4" placeholder="心誠則靈，請輸入具體問題...（例如工作抉擇、感情走向、面試結果）" autocomplete="off"></textarea>
             </div>
             
+            <!-- 互動式搖骰子區域 -->
             <div class="divine-container">
                 <p class="hint">【擲骰子】</p>
                 <p class="hint-sub">搖之前請在心中默念 1 次問題</p>
@@ -28,8 +37,10 @@
                 
                 <p class="hint-or">或</p>
                 
+                <!-- 允許手機搖晃感應按鈕 (iOS 專用，預設隱藏) -->
                 <button id="motion-btn" class="btn-motion hidden">點擊允許手機搖晃感應</button>
 
+                <!-- 法器主體 -->
                 <div id="dice-cup" class="dice-cup">
                     <div class="cup-body">🏮</div>
                     <div class="dice-container">
@@ -41,6 +52,7 @@
             </div>
         </section>
 
+        <!-- 二、結果顯示區 -->
         <section id="result-section" class="card result-section hidden">
             <h2>二、啟卦天機</h2>
             
@@ -70,6 +82,7 @@
             </div>
         </section>
 
+        <!-- 三、Prompt 生成區 -->
         <section id="prompt-section" class="card prompt-section hidden">
             <h2>三、AI 解卦 Prompt 產生器</h2>
             <p class="tip">下方經文已整合您的卦象，複製後即可貼至大語言模型進行深度解析。</p>
