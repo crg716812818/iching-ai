@@ -1,3 +1,7 @@
+// ==========================================
+// 1. 資料定義 (Trigrams & 完整 64 Hexagrams)
+// ==========================================
+
 const trigrams = {
     '111': { name: '乾', nature: '天' },
     '110': { name: '兌', nature: '澤' },
@@ -14,7 +18,7 @@ const hexagramsDatabase = {
     '坤坤': { number: 2,  name: '坤', fullName: '坤為地', judgment: '元亨，利牝馬之貞。' },
     '水雷': { number: 3,  name: '屯', fullName: '水雷屯', judgment: '元亨，利貞。勿用有攸往，利建侯。' },
     '山水': { number: 4,  name: '蒙', fullName: '山水蒙', judgment: '亨。匪我求童蒙，童蒙求我。' },
-    '水天': { number: 5,  name: '需', fullName: '水天需', judgment: '有孚，光亨，貞吉. 利涉大川。' },
+    '水天': { number: 5,  name: '需', fullName: '水天需', judgment: '有孚，光亨，貞吉。利涉大川。' },
     '天水': { number: 6,  name: '訟', fullName: '天水訟', judgment: '有孚，窒。惕中吉。終凶。' },
     '地水': { number: 7,  name: '師', fullName: '地水師', judgment: '貞，丈人吉，無咎。' },
     '水地': { number: 8,  name: '比', fullName: '水地比', judgment: '吉。原筮元永貞，無咎。' },
@@ -76,6 +80,9 @@ const hexagramsDatabase = {
     '火水': { number: 64, name: '未濟', fullName: '火水未濟', judgment: '亨，小狐濡尾，吝無攸利。' }
 };
 
+// ==========================================
+// 2. 爻辭與理數動態生成器
+// ==========================================
 function generateLineText(bits, movingLine, hexName) {
     const movingIndex = movingLine - 1;
     const isYang = bits[movingIndex] === 1;
@@ -98,6 +105,9 @@ function generateLineText(bits, movingLine, hexName) {
 核心理數：此爻發動，提示事情在發展的第 ${movingLine} 階段發生關鍵變局，觸發後面變卦。`;
 }
 
+// ==========================================
+// 3. 核心算法 (由下往上精準對照)
+// ==========================================
 function getTrigramsFromBits(bits) {
     const lowerBits = bits.slice(0, 3).join('');
     const upperBits = bits.slice(3, 6).join('');
@@ -117,13 +127,14 @@ function lookupHexagram(bits) {
 }
 
 // ==========================================
-// 4. 核心互動控管區 (支援滑鼠、手指、手機實體搖晃)
+// 4. 核心互動控管區 (滑鼠拖曳、手指觸控、手機實體搖晃)
 // ==========================================
 const diceCup = document.getElementById('dice-cup');
 const questionInput = document.getElementById('question');
 const resultSection = document.getElementById('result-section');
 const promptSection = document.getElementById('prompt-section');
 const motionBtn = document.getElementById('motion-btn');
+const hintOrElement = document.querySelector('.hint-or');
 
 let isDragging = false;
 let startX, startY;
@@ -189,30 +200,12 @@ function randomizeDiceVisuals() {
 
 // --- 互動 B：手機實體重力搖晃感應 (Web DeviceMotion) ---
 let lastX = null, lastY = null, lastZ = null;
-const SHAKE_THRESHOLD = 15; // 搖晃速度閾值
+const SHAKE_THRESHOLD = 15; 
 let realPhoneShakeTimer = null;
-
-// iOS 13+ 需要使用者點擊授權才能開啟陀螺儀
-if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-    motionBtn.classList.remove('hidden');
-    motionBtn.addEventListener('click', () => {
-        DeviceMotionEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    motionBtn.classList.add('hidden');
-                    window.addEventListener('devicemotion', handleDeviceMotion, false);
-                }
-            })
-            .catch(console.error);
-    });
-} else {
-    // Android 或不需授權的裝置直接監聽
-    window.addEventListener('devicemotion', handleDeviceMotion, false);
-}
 
 function handleDeviceMotion(event) {
     const questionText = questionInput.value.trim();
-    if (!questionText) return; // 沒打問題不觸發搖晃
+    if (!questionText) return;
 
     const acceleration = event.accelerationIncludingGravity;
     if (!acceleration) return;
@@ -230,7 +223,6 @@ function handleDeviceMotion(event) {
     let deltaY = Math.abs(y - lastY);
     let deltaZ = Math.abs(z - lastZ);
 
-    // 如果三軸的變化量超過閾值，代表使用者正在實體搖晃手機
     if ((deltaX > SHAKE_THRESHOLD && deltaY > SHAKE_THRESHOLD) || 
         (deltaX > SHAKE_THRESHOLD && deltaZ > SHAKE_THRESHOLD) || 
         (deltaY > SHAKE_THRESHOLD && deltaZ > SHAKE_THRESHOLD)) {
@@ -242,7 +234,6 @@ function handleDeviceMotion(event) {
 
         randomizeDiceVisuals();
 
-        // 倒數計時：停止搖晃 1 秒後自動判定為收卦
         clearTimeout(realPhoneShakeTimer);
         realPhoneShakeTimer = setTimeout(() => {
             isShakingRealPhone = false;
@@ -252,6 +243,34 @@ function handleDeviceMotion(event) {
     }
 
     lastX = x; lastY = y; lastZ = z;
+}
+
+// --- 互動 C：裝置陀螺儀授權與電腦版「或」字環境判定 ---
+if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+    // 確判為需要點擊授權的行動裝置 (如 iOS) -> 展開按鈕與或字
+    if (motionBtn) motionBtn.classList.remove('hidden');
+    if (hintOrElement) hintOrElement.classList.remove('hidden');
+    
+    motionBtn.addEventListener('click', () => {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    if (motionBtn) motionBtn.classList.add('hidden');
+                    if (hintOrElement) hintOrElement.classList.add('hidden'); // 授權成功同時藏掉「或」字
+                    window.addEventListener('devicemotion', handleDeviceMotion, false);
+                }
+            })
+            .catch(console.error);
+    });
+} else {
+    // Android 或不需授權的裝置直接監聽
+    window.addEventListener('devicemotion', handleDeviceMotion, false);
+    
+    // 如果是一般電腦、桌機 (完全不支援 DeviceMotion 且無 requestPermission 函數)
+    if (typeof DeviceMotionEvent === 'undefined' || !('ontouchstart' in window)) {
+        if (motionBtn) motionBtn.classList.add('hidden');
+        if (hintOrElement) hintOrElement.classList.add('hidden'); // 💡 電腦端自動隱藏「或」字
+    }
 }
 
 // --- 核心開卦與渲染邏輯 ---
@@ -354,7 +373,8 @@ ${lineText}
 4. 建議行動
 5. 直接回答問題
 
-請用白話中文很直接的解釋，不要過度神秘化。`;
+請用白話中文很直接的解釋，不要過度神秘化。
+問題的問法若不夠精確改善請給我建議。`;
 
     document.getElementById('prompt-content').value = generatedPrompt;
 
@@ -377,7 +397,7 @@ if (copyBtn && toast) {
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }).catch(() => {
-            alert('複製失敗，請手動複製文字。');
+            alert('複製失敗，請手動複製。');
         });
     });
 }
