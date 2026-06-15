@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════════════════════
-   莫蘭迪×宋代仕女 — 療癒東方美學配色（手機字體排版優化版）
+   莫蘭迪×宋代仕女 — 療癒東方美學配色（全端終極優化版）
    調色靈感：煙藕粉・青瓷霧・舊竹白・沉香灰
-   字體：ZCOOL XiaoWei（標題）+ Noto Serif TC（內文）
+   字體備援：ZCOOL XiaoWei / 儷宋 / 華康明體 / 系統宋體
    ══════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+TC:wght@300;400;500;700&display=swap');
@@ -41,7 +41,8 @@
 }
 
 body {
-    font-family: 'Noto Serif TC', 'Noto Serif SC', serif;
+    /* 補齊所有行動裝置內建的最美襯線字體，防止掉字體變細明體 */
+    font-family: 'Noto Serif TC', 'Noto Serif SC', 'Songti TC', 'BiauKai', '🍎蘋果儷細宋', 'LiSong Pro', 'Microsoft YaHei', serif;
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.75;
@@ -58,7 +59,7 @@ body {
     margin: 0 auto;
 }
 
-/* ══ Header ══ */
+/* ══ Header 標題與裝飾符不掉行彈性排版 ══ */
 header {
     text-align: center;
     margin-bottom: 36px;
@@ -79,28 +80,35 @@ header::before { margin-bottom: 20px; }
 header::after  { margin-top: 20px; }
 
 header h1 {
-    font-family: 'ZCOOL XiaoWei', serif;
-    font-size: 2.4rem;  /* 手機端稍微調小，避免溢出 */
-    font-weight: 400;
+    font-family: 'ZCOOL XiaoWei', 'Songti TC', '🍎蘋果儷細宋', 'LiSong Pro', 'Noto Serif TC', serif;
+    font-size: 2.3rem;  
+    font-weight: 500;
     color: var(--primary);
     letter-spacing: 0.05em;
     line-height: 1.4;
+    
+    /* 用 Flex 讓菱形符號緊咬著文字，並確保在手機端整塊完美換行 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 0.2em;      
 }
 
-/* 修正：利用 inline-block 讓大字在手機窄螢幕上完美整塊換行，不會斷字 */
-header h1 span {
+header h1::before {
+    content: '◆';
+    font-size: 0.5em;
+    color: var(--accent-soft);
+    opacity: 0.7;
     display: inline-block;
-    white-space: nowrap;
 }
 
-header h1::before,
 header h1::after {
     content: '◆';
     font-size: 0.5em;
     color: var(--accent-soft);
-    vertical-align: middle;
-    margin: 0 0.2em;
     opacity: 0.7;
+    display: inline-block;
 }
 
 .subtitle {
@@ -108,18 +116,18 @@ header h1::after {
     font-size: 0.95rem;
     font-weight: 400;
     letter-spacing: 0.03em;
-    margin-top: 10px;
+    margin-top: 14px;
     padding: 0 10px;
 }
 
-/* 修正：讓副標題在手機上呈現優雅的兩行排列 */
 .subtitle span {
     display: block;
     margin-bottom: 4px;
 }
 
+/* 小螢幕手機防溢出微調 */
 @media (max-width: 400px) {
-    header h1 { font-size: 2rem; }
+    header h1 { font-size: 1.9rem; }
     .subtitle { font-size: 0.85rem; }
 }
 
@@ -144,9 +152,9 @@ header h1::after {
 }
 
 h2 {
-    font-family: 'ZCOOL XiaoWei', serif;
+    font-family: 'ZCOOL XiaoWei', 'Songti TC', 'Noto Serif TC', serif;
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 18px;
     padding-left: 14px;
     color: var(--text-main);
@@ -179,6 +187,7 @@ label {
     font-weight: 400;
 }
 
+/* 問題輸入大方格 */
 textarea#question {
     width: 100%;
     padding: 13px 16px;
@@ -187,7 +196,7 @@ textarea#question {
     border-radius: 3px;
     color: var(--text-main);
     font-size: 1rem;
-    font-family: 'Noto Serif TC', serif;
+    font-family: 'Noto Serif TC', 'Songti TC', serif;
     transition: border-color 0.25s, box-shadow 0.25s;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
     line-height: 1.6;
@@ -218,8 +227,9 @@ textarea#question:focus { outline: none; border-color: var(--accent); box-shadow
 .divine-container::before { top: 8px; left: 12px; }
 .divine-container::after  { bottom: 8px; right: 12px; }
 
+/* 文本精密置中與斷句排版 */
 .hint {
-    font-family: 'ZCOOL XiaoWei', serif;
+    font-family: 'ZCOOL XiaoWei', 'Songti TC', 'Noto Serif TC', serif;
     font-size: 1.4rem;
     color: var(--primary);
     margin-bottom: 6px;
@@ -264,6 +274,7 @@ textarea#question:focus { outline: none; border-color: var(--accent); box-shadow
 .hint-or::before { left: calc(50% - 40px); }
 .hint-or::after  { right: calc(50% - 40px); }
 
+/* 允許手機搖晃感應按鈕 */
 .btn-motion {
     display: block;
     margin: 0 auto 16px auto;
@@ -334,14 +345,14 @@ textarea#question:focus { outline: none; border-color: var(--accent); box-shadow
 .bg-info { background-color: var(--accent-light); border-color: var(--accent); color: #7a6040; }
 
 .visual-panel { background-color: var(--card-inner); border-radius: 3px; padding: 20px; border: 1px solid var(--border); text-align: center; }
-.visual-panel h3 { font-family: 'ZCOOL XiaoWei', serif; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 0.1em; font-weight: 400; }
+.visual-panel h3 { font-family: 'ZCOOL XiaoWei', 'Songti TC', serif; font-size: 0.92rem; color: var(--text-muted); margin-bottom: 16px; letter-spacing: 0.1em; font-weight: 400; }
 
 .diagram { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .line-item { font-family: monospace; font-size: 1.25rem; font-weight: bold; letter-spacing: 3px; color: var(--text-muted); white-space: nowrap; }
 .moving-line { color: var(--accent); text-shadow: 0 0 6px rgba(184, 154, 106, 0.5); }
 
 .line-text-box { background-color: var(--card-inner); padding: 16px; border-radius: 3px; border: 1px solid var(--border-soft); border-left: 3px solid var(--accent); }
-.line-text-box h4 { font-family: 'ZCOOL XiaoWei', serif; font-size: 0.95rem; font-weight: 400; color: var(--accent); margin-bottom: 8px; letter-spacing: 0.08em; }
+.line-text-box h4 { font-family: 'ZCOOL XiaoWei', 'Songti TC', serif; font-size: 0.95rem; font-weight: 400; color: var(--accent); margin-bottom: 8px; letter-spacing: 0.08em; }
 
 textarea#prompt-content { width: 100%; background-color: var(--card-inner); color: var(--text-main); border: 1px solid var(--border); border-radius: 3px; padding: 13px; font-family: 'Noto Serif TC', serif; font-size: 0.92rem; resize: none; margin-bottom: 16px; line-height: 1.8; }
 textarea#prompt-content:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }

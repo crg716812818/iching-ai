@@ -245,7 +245,7 @@ function handleDeviceMotion(event) {
     lastX = x; lastY = y; lastZ = z;
 }
 
-// --- 互動 C：裝置陀螺儀授權與電腦版「或」字環境判定 ---
+// --- 互動 C：裝置陀螺儀授權與電腦版「或」字環境動態控制 ---
 if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
     // 確判為需要點擊授權的行動裝置 (如 iOS) -> 展開按鈕與或字
     if (motionBtn) motionBtn.classList.remove('hidden');
@@ -256,7 +256,7 @@ if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.request
             .then(permissionState => {
                 if (permissionState === 'granted') {
                     if (motionBtn) motionBtn.classList.add('hidden');
-                    if (hintOrElement) hintOrElement.classList.add('hidden'); // 授權成功同時藏掉「或」字
+                    if (hintOrElement) hintOrElement.classList.add('hidden'); // 授權成功後同時藏掉「或」字
                     window.addEventListener('devicemotion', handleDeviceMotion, false);
                 }
             })
@@ -266,10 +266,10 @@ if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.request
     // Android 或不需授權的裝置直接監聽
     window.addEventListener('devicemotion', handleDeviceMotion, false);
     
-    // 如果是一般電腦、桌機 (完全不支援 DeviceMotion 且無 requestPermission 函數)
+    // 如果是一般電腦、桌機 (完全不支援 DeviceMotion 且無觸控觸發)
     if (typeof DeviceMotionEvent === 'undefined' || !('ontouchstart' in window)) {
         if (motionBtn) motionBtn.classList.add('hidden');
-        if (hintOrElement) hintOrElement.classList.add('hidden'); // 💡 電腦端自動隱藏「或」字
+        if (hintOrElement) hintOrElement.classList.add('hidden'); // ✨ 電腦端環境防漏：自動隱藏「或」字
     }
 }
 
@@ -338,43 +338,36 @@ function executeDivination() {
         diagramContainer.appendChild(lineDiv);
     }
 
+    // ✨ 修正：全新升級的 Prompt 模板結構（直白中文解碼＋提問引導診斷）
     const generatedPrompt = `請用梅花易數與易經象數派角度分析以下卦象。
 
-問題：
+【請示問題】
 ${questionText}
 
-起卦結果：
+【起卦結果】
 上卦：${upper}
 下卦：${lower}
 動爻：${movingLineChinese}
 
-本卦：
-${mainHexName}
-
-變卦：
-${changedHexName}
-
-互卦：
-${mutualHexName}
-
-錯卦：
-${oppositeHexName}
-
-綜卦：
-${reversedHexName}
+本卦：${mainHexName}
+變卦：${changedHexName}
+互卦：${mutualHexName}
+錯卦：${oppositeHexName}
+綜卦：${reversedHexName}
 
 動爻爻辭：
 ${lineText}
 
-請從以下角度分析：
-1. 目前狀況
-2. 結果趨勢
-3. 阻礙因素
-4. 建議行動
-5. 直接回答問題
+【執行指令】
+請嚴格遵循以下要求進行深度解析：
+1. 當前局勢：說明目前面臨的真實狀況與隱含的環境因素。
+2. 未來進程：預測事情接下來的發展趨勢、轉折點與潛在阻礙。
+3. 行動戰略：結合動爻階段，給予明確、具體且可操作的下一步行動建議。
+4. 直擊解答：針對使用者提出的問題，給出最核心、不繞圈子的答案。
 
-請用白話中文很直接的解釋，不要過度神秘化。
-問題的問法若不夠精確改善請給我建議。`;
+【核心原則】
+⚠️ 請用「白話中文」很直接地解釋，拒絕使用空洞、生硬的神祕學套話或過度神秘化，要把理數轉化為現代人的生活與決策邏輯。
+⚠️ 如果你發現使用者輸入的問題問法不夠精確、細節不足（導致理數無法完美對照現實），請在文章最後「特別開闢一個段落」，針對使用者的提問方式給予具體的改善建議，教他下次應該如何精準補充資訊。`;
 
     document.getElementById('prompt-content').value = generatedPrompt;
 
