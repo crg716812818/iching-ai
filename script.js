@@ -120,6 +120,49 @@ const inquiryCategories = [
 
 let activeCategory = 'love';
 let activeTemplate = inquiryTemplates[0];
+let inquiryConfirmed = false;
+
+function normalizeBirthday(value) {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length === 8) return `${digits.slice(0, 4)}/${digits.slice(4, 6)}/${digits.slice(6)}`;
+    return value.trim().replaceAll('-', '/');
+}
+
+function isValidBirthday(value) {
+    if (!value) return true;
+    const match = value.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
+    if (!match) return false;
+    const [, year, month, day] = match.map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+}
+
+function validateBirthday(input, message, enabled = true) {
+    if (!enabled) {
+        input.removeAttribute('aria-invalid');
+        message.classList.remove('error');
+        message.textContent = '';
+        return true;
+    }
+    input.value = normalizeBirthday(input.value);
+    const valid = isValidBirthday(input.value);
+    input.setAttribute('aria-invalid', String(!valid));
+    message.classList.toggle('error', !valid);
+    message.textContent = valid ? '格式：YYYY/MM/DD' : '請輸入有效日期，例如 1999/02/05';
+    return valid;
+}
+
+function updateStepProgress() {
+    const birthday = document.getElementById('person-birthday');
+    const steps = {
+        1: Boolean(activeTemplate),
+        2: Boolean(document.getElementById('person-name').value.trim()) && isValidBirthday(birthday.value),
+        3: Boolean(document.getElementById('question').value.trim()),
+        4: !document.getElementById('result-section').classList.contains('hidden'),
+        5: !document.getElementById('prompt-section').classList.contains('hidden')
+    };
+    document.querySelectorAll('[data-step]').forEach(section => section.classList.toggle('completed', steps[section.dataset.step]));
+}
 
 function personDescription() {
     const name = document.getElementById('person-name').value.trim() || '當事人';
@@ -146,6 +189,10 @@ function updateInquiry(force = false) {
     if (additional) text += ` 補充背景：${additional}。`;
     const question = document.getElementById('question');
     if (force || question.dataset.userEdited !== 'true') question.value = text;
+    inquiryConfirmed = false;
+    document.getElementById('divination-confirm').classList.remove('confirmed');
+    document.getElementById('confirm-inquiry-btn').textContent = '確認，準備起卦';
+    updateStepProgress();
 }
 
 function selectTemplate(template) {
@@ -156,6 +203,9 @@ function selectTemplate(template) {
     document.getElementById('subject-value').placeholder = label;
     document.getElementById('subject-extra-label').textContent = extraLabel;
     document.getElementById('subject-extra').placeholder = extraLabel;
+    const subjectUsesBirthday = extraLabel.includes('生日');
+    document.getElementById('subject-extra').inputMode = subjectUsesBirthday ? 'numeric' : 'text';
+    validateBirthday(document.getElementById('subject-extra'), document.getElementById('subject-extra-message'), subjectUsesBirthday);
     document.getElementById('subject-legend').textContent = template.category === 'love' ? '第二對象（選填）' : '占問相關資料（選填）';
     document.getElementById('custom-question-group').classList.toggle('hidden', !template.custom);
     document.getElementById('question').dataset.userEdited = 'false';
@@ -182,6 +232,10 @@ function initializeInquiryBuilder() {
         button.type = 'button'; button.className = `category-tab${category.id === activeCategory ? ' active' : ''}`;
         button.innerHTML = `<span>${category.icon}</span>${category.label}`;
         button.addEventListener('click', () => {
+            if (activeCategory !== category.id) {
+                document.getElementById('subject-value').value = '';
+                document.getElementById('subject-extra').value = '';
+            }
             activeCategory = category.id;
             document.querySelectorAll('.category-tab').forEach(tab => tab.classList.toggle('active', tab === button));
             renderTemplates();
@@ -193,7 +247,32 @@ function initializeInquiryBuilder() {
     document.getElementById('location').addEventListener('change', event => {
         document.getElementById('custom-location-group').classList.toggle('hidden', event.target.value !== 'other'); updateInquiry();
     });
-    document.getElementById('question').addEventListener('input', event => { if (event.isTrusted) event.target.dataset.userEdited = 'true'; });
+    document.getElementById('question').addEventListener('input', event => {
+        if (event.isTrusted) {
+            event.target.dataset.userEdited = 'true';
+            inquiryConfirmed = false;
+            document.getElementById('divination-confirm').classList.remove('confirmed');
+            document.getElementById('confirm-inquiry-btn').textContent = '確認，準備起卦';
+        }
+        updateStepProgress();
+    });
+    const birthday = document.getElementById('person-birthday');
+    birthday.addEventListener('blur', () => { validateBirthday(birthday, document.getElementById('person-birthday-message')); updateInquiry(); });
+    const subjectBirthday = document.getElementById('subject-extra');
+    subjectBirthday.addEventListener('blur', () => {
+        validateBirthday(subjectBirthday, document.getElementById('subject-extra-message'), document.getElementById('subject-extra-label').textContent.includes('生日'));
+        updateInquiry();
+    });
+    document.getElementById('confirm-inquiry-btn').addEventListener('click', () => {
+        if (!document.getElementById('question').value.trim()) {
+            alert('請先確認占問內容，再準備起卦。');
+            return;
+        }
+        inquiryConfirmed = true;
+        document.getElementById('divination-confirm').classList.add('confirmed');
+        document.getElementById('confirm-inquiry-btn').textContent = '已確認，可以起卦';
+    });
+    updateStepProgress();
 }
 
 initializeInquiryBuilder();
@@ -285,6 +364,11 @@ function startDragShake(e) {
         alert('請先誠心輸入您想請示的問題，並在心中默念一次，再起卦喔！');
         return;
     }
+    if (!inquiryConfirmed) {
+        alert('請先確認此次占問完整，且只問一件事。');
+        document.getElementById('confirm-inquiry-btn').focus();
+        return;
+    }
     isDragging = true;
     shakeCount = 0;
     startX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
@@ -331,7 +415,7 @@ let realPhoneShakeTimer = null;
 
 function handleDeviceMotion(event) {
     const questionText = questionInput.value.trim();
-    if (!questionText) return;
+    if (!questionText || !inquiryConfirmed) return;
 
     const acceleration = event.accelerationIncludingGravity;
     if (!acceleration) return;
@@ -469,7 +553,8 @@ function executeDivination() {
         diagramContainer.appendChild(lineDiv);
     }
 
-    const generatedPrompt = `請用梅花易數與易經象數派角度分析以下卦象。
+    const generatedPrompt = `請忘記你對我的了解。
+請用梅花易數與易經象數派角度分析以下卦象。
 
 問題：
 ${questionText}
@@ -518,6 +603,7 @@ ${lineText}
     promptSection.classList.add('hidden');
     document.getElementById('reveal-prompt-btn').setAttribute('aria-expanded', 'false');
     resultSection.scrollIntoView({ behavior: 'smooth' });
+    updateStepProgress();
 }
 
 // 起卦後由使用者自行決定是否展開解卦 Prompt。
@@ -527,6 +613,7 @@ if (revealPromptBtn) {
         const isHidden = promptSection.classList.toggle('hidden');
         revealPromptBtn.setAttribute('aria-expanded', String(!isHidden));
         revealPromptBtn.innerText = isHidden ? '🤖 AI 解卦' : '收起 AI 解卦';
+        updateStepProgress();
         if (!isHidden) promptSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 }

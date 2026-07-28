@@ -381,8 +381,10 @@ textarea#prompt-content:focus { outline: none; border-color: var(--accent); box-
 #wisdom-text { transition: opacity .3s ease, transform .3s ease; }
 #wisdom-text.fade { opacity: 0; transform: translateY(4px); }
 
-.section-heading { display: flex; gap: 13px; align-items: flex-start; margin-bottom: 20px; position: relative; z-index: 1; }
+.section-heading { display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 20px; position: relative; z-index: 1; text-align: center; }
 .section-heading > span { flex: 0 0 32px; width: 32px; height: 32px; border: 1px solid var(--accent-soft); border-radius: 50%; display: grid; place-items: center; color: var(--primary); font-family: 'ZCOOL XiaoWei', serif; background: var(--accent-light); }
+.completed > .section-heading > span { position: relative; border-color: var(--success); color: var(--success); }
+.completed > .section-heading > span::after { content: '✓'; position: absolute; right: -8px; top: -7px; width: 17px; height: 17px; display: grid; place-items: center; border-radius: 50%; background: var(--success); color: var(--card-bg); font: 700 11px/1 sans-serif; box-shadow: 0 1px 4px var(--shadow-warm); }
 .section-heading h2 { margin: 0 0 3px; padding: 0; }
 .section-heading h2::before { display: none; }
 .section-heading p { color: var(--text-muted); font-size: .8rem; line-height: 1.55; }
@@ -402,9 +404,18 @@ legend { color: var(--primary); padding-right: 12px; font-size: .9rem; letter-sp
 input, select, textarea#additional-info, textarea#custom-question, textarea#question { width: 100%; padding: 12px 14px; background-color: var(--card-inner); border: 1px solid var(--border); border-radius: 3px; color: var(--text-main); font: .95rem 'Noto Serif TC', serif; line-height: 1.65; transition: border-color .25s, box-shadow .25s; }
 input:focus, select:focus, textarea#additional-info:focus, textarea#custom-question:focus, textarea#question:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
 input::placeholder, textarea::placeholder { color: var(--text-soft); }
+input[aria-invalid="true"] { border-color: var(--primary); }
+.field-message { display: block; min-height: 1.35em; margin-top: 5px; color: var(--text-soft); font-size: .72rem; }
+.field-message.error { color: var(--primary); }
 select { min-height: 50px; cursor: pointer; }
 textarea#question { min-height: 180px; }
 .ritual-steps { width: fit-content; max-width: 100%; margin: 10px auto 4px; padding-left: 1.6rem; color: var(--text-main); font-size: .92rem; text-align: left; line-height: 2; }
+.divination-confirm { max-width: 360px; margin: 14px auto 18px; padding: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.2); }
+.divination-confirm p { margin-bottom: 9px; color: var(--text-muted); font-size: .85rem; }
+.divination-confirm button { min-height: 44px; width: 100%; border: 1px solid var(--primary); border-radius: 3px; background: transparent; color: var(--primary); font: .88rem 'Noto Serif TC', serif; cursor: pointer; }
+.divination-confirm.confirmed { border-color: rgba(107,143,113,.45); background: rgba(107,143,113,.08); }
+.divination-confirm.confirmed button { border-color: var(--success); background: var(--success); color: var(--card-bg); }
+.divination-confirm:not(.confirmed) + .dice-cup { opacity: .48; filter: grayscale(.35); }
 .btn-ai { width: 100%; margin-top: 20px; padding: 14px 18px; border: 1px solid var(--primary); border-radius: 3px; background: var(--primary); color: var(--card-bg); font: 1rem 'Noto Serif TC', serif; letter-spacing: .1em; cursor: pointer; box-shadow: 0 3px 12px var(--shadow-warm); }
 .btn-ai:hover { background: var(--primary-hover); }
 .ai-note { text-align: center; color: var(--text-soft); font-size: .78rem; margin-top: 8px; }
@@ -415,8 +426,21 @@ textarea#question { min-height: 180px; }
     header { margin-bottom: 20px; padding-top: 20px; }
     header h1 { font-size: 2rem; }
     .card { padding: 19px 16px; margin-bottom: 15px; }
+    .section-heading { gap: 6px; margin-bottom: 16px; }
+    .section-heading > span { width: 29px; height: 29px; flex-basis: 29px; }
+    .section-heading h2 { font-size: 1.15rem; }
     .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .category-tab { min-height: 64px; }
+    .template-option { min-height: 48px; padding-top: 12px; padding-bottom: 12px; }
     .form-row { grid-template-columns: 1fr; gap: 0; }
+    input, select, textarea#additional-info, textarea#custom-question, textarea#question { font-size: 16px; }
+    .dice-cup { width: 116px; height: 146px; }
+    .btn-ai, .btn-success, .ai-btn { min-height: 48px; }
     .ai-grid { grid-template-columns: 1fr; }
     .line-item { font-size: 1rem; letter-spacing: 1px; }
+    .primary-hexagram { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; font-size: 1.08rem; }
+    .primary-hexagram .badge { padding: 6px 13px; font-size: .98rem; }
+    .secondary-hexagrams { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding-top: 8px; border-top: 1px dashed var(--border); }
+    .secondary-hexagrams p { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: .8rem; text-align: center; }
+    .secondary-hexagrams .badge { margin-left: 0; padding: 3px 6px; font-size: .78rem; }
 }
