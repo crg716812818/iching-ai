@@ -3,99 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI I Ching Prompt Generator | 數位易經算卦器</title>
+    <meta name="description" content="以梅花易數靜心起卦，從完整占問到五卦與動爻指引。">
+    <title>易經占卜聖殿</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>☯️ 易經 AI 占卜聖殿</h1>
-            <p class="subtitle">
-                <span>揲蓍布卦，感格神明。</span>
-                <span>一鍵生成大語言模型深度解卦 Prompt</span>
-            </p>
+            <p class="eyebrow">梅花易數 · 一事一占</p>
+            <h1>易經占卜聖殿</h1>
+            <div class="wisdom-rotator" aria-live="polite"><span id="wisdom-text">心誠則靈，問一事，不問二心。</span></div>
         </header>
 
-        <section class="card input-section">
-            <h2>一、注入所求之事</h2>
-            <div class="form-group">
-                <label for="question">請在下方誠心輸入你心中所求之疑問：</label>
-                <textarea id="question" rows="4" placeholder="心誠則靈，請輸入具體問題...（例如工作抉擇、感情走向、面試結果）" autocomplete="off"></textarea>
-            </div>
-            
-            <div class="divine-container">
-                <p class="hint">【擲骰子】</p>
-                <p class="hint-sub">搖之前請在心中默念 1 次問題</p>
-                <p class="hint-desc">（用手指按住法器來回拖曳）</p>
-                
-                <p class="hint-or">或</p>
-                
-                <button id="motion-btn" class="btn-motion hidden">點擊允許手機搖晃感應</button>
+        <main>
+            <section class="card inquiry-section" data-step="1">
+                <div class="section-heading"><span>壹</span><div><h2>選擇所問之事</h2><p>依序選擇分類與占問模板，讓心中疑問清楚成形。</p></div></div>
+                <div id="category-tabs" class="category-grid" role="tablist" aria-label="占問分類"></div>
+                <div id="template-list" class="template-list" role="listbox" aria-label="占問模板"></div>
+            </section>
 
-                <div id="dice-cup" class="dice-cup">
-                    <div class="cup-body">🏮</div>
-                    <div class="dice-container">
-                        <div class="die">⚀</div>
-                        <div class="die">⚂</div>
-                        <div class="die">⚄</div>
+            <section class="card details-section" data-step="2">
+                <div class="section-heading"><span>貳</span><div><h2>填寫占問資料</h2><p>資料僅在瀏覽器中用於組成占問，不會傳送至任何服務。</p></div></div>
+                <fieldset>
+                    <legend>主要當事人</legend>
+                    <div class="form-row">
+                        <div class="form-group"><label for="person-name">姓名</label><input id="person-name" type="text" placeholder="張瑞塵" autocomplete="name"></div>
+                        <div class="form-group"><label for="person-birthday">生日</label><input id="person-birthday" type="text" placeholder="2021/05/21" inputmode="numeric" aria-describedby="person-birthday-message"><small id="person-birthday-message" class="field-message">格式：YYYY/MM/DD</small></div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="result-section" class="card result-section hidden">
-            <h2>二、啟卦天機</h2>
-            
-            <div class="result-grid">
-                <div class="info-panel">
-                    <p><strong>上卦：</strong><span id="res-upper"></span></p>
-                    <p><strong>下卦：</strong><span id="res-lower"></span></p>
-                    <p><strong>動爻：</strong><span id="res-moving"></span></p>
-                    <div class="hexagram-names">
-                        <p><strong>本卦：</strong><span id="hex-main" class="badge"></span></p>
-                        <p><strong>變卦：</strong><span id="hex-changed" class="badge bg-change"></span></p>
-                        <p><strong>互卦：</strong><span id="hex-mutual" class="badge bg-info"></span></p>
-                        <p><strong>錯卦：</strong><span id="hex-opposite" class="badge bg-info"></span></p>
-                        <p><strong>綜卦：</strong><span id="hex-reversed" class="badge bg-info"></span></p>
+                </fieldset>
+                <fieldset id="subject-fields">
+                    <legend id="subject-legend">第二對象（選填）</legend>
+                    <div class="form-row">
+                        <div class="form-group"><label id="subject-label" for="subject-value">對方姓名</label><input id="subject-value" type="text" placeholder="對方姓名"></div>
+                        <div id="subject-extra-group" class="form-group"><label id="subject-extra-label" for="subject-extra">對方生日</label><input id="subject-extra" type="text" placeholder="1999/08/09" aria-describedby="subject-extra-message"><small id="subject-extra-message" class="field-message">格式：YYYY/MM/DD</small></div>
                     </div>
+                </fieldset>
+                <div class="form-row location-row">
+                    <div class="form-group"><label for="location">起卦地點</label><select id="location"><option>台灣</option><option>美國</option><option>香港</option><option>新加坡</option><option>日本</option><option>中國</option><option value="other">其他（自訂）</option></select></div>
+                    <div id="custom-location-group" class="form-group hidden"><label for="custom-location">自訂地點</label><input id="custom-location" type="text" placeholder="請輸入國家或城市"></div>
                 </div>
-                
-                <div class="visual-panel">
-                    <h3>本卦聖象圖</h3>
-                    <div id="hexagram-diagram" class="diagram"></div>
+                <div class="form-group"><label for="additional-info">補充資訊（選填）</label><textarea id="additional-info" rows="3" placeholder="例如目前狀況、時間範圍、成本或最在意的事情"></textarea></div>
+                <div id="custom-question-group" class="form-group hidden"><label for="custom-question">想占問的問題</label><textarea id="custom-question" rows="3" placeholder="請專注在一件事情，寫下你真正想問的問題"></textarea></div>
+            </section>
+
+            <section class="card input-section" data-step="3">
+                <div class="section-heading"><span>參</span><div><h2>確認占問內容</h2><p>系統會依資料自動組成，你仍可在起卦前自由修改。</p></div></div>
+                <div class="form-group"><label for="question">此次真正用於起卦的內容</label><textarea id="question" rows="7" placeholder="請先選擇模板並填寫資料，系統會在這裡產生完整占問內容。" autocomplete="off"></textarea></div>
+                <div class="divine-container">
+                    <p class="hint">【靜心起卦】</p>
+                    <ol class="ritual-steps"><li>吸氣吐氣，靜下心來</li><li>跟著上方題目默念一次</li><li>用手指按住法器左右移動</li></ol>
+                    <p class="hint-or">或</p>
+                    <button id="motion-btn" class="btn-motion hidden">點擊允許手機搖晃感應</button>
+                    <div id="divination-confirm" class="divination-confirm">
+                        <p>此次占問是否已完整，且只問一件事？</p>
+                        <button id="confirm-inquiry-btn" type="button">確認，準備起卦</button>
+                    </div>
+                    <div id="dice-cup" class="dice-cup" role="button" tabindex="0" aria-label="按住並左右拖曳法器起卦"><div class="cup-body">🏮</div><div class="dice-container"><div class="die">⚀</div><div class="die">⚂</div><div class="die">⚄</div></div></div>
                 </div>
-            </div>
+            </section>
 
-            <div class="line-text-box">
-                <h4>動爻爻辭指引</h4>
-                <p id="res-line-text">正在讀取爻辭...</p>
-            </div>
-        </section>
+            <section id="result-section" class="card result-section hidden" data-step="4">
+                <div class="section-heading"><span>肆</span><div><h2>卦象天機</h2><p id="divination-meta"></p></div></div>
+                <div class="result-grid"><div class="info-panel"><p><strong>上卦：</strong><span id="res-upper"></span></p><p><strong>下卦：</strong><span id="res-lower"></span></p><p><strong>動爻：</strong><span id="res-moving"></span></p><div class="hexagram-names"><p class="primary-hexagram"><strong>本卦：</strong><span id="hex-main" class="badge"></span></p><p class="primary-hexagram"><strong>變卦：</strong><span id="hex-changed" class="badge bg-change"></span></p><div class="secondary-hexagrams"><p><strong>互卦：</strong><span id="hex-mutual" class="badge bg-info"></span></p><p><strong>錯卦：</strong><span id="hex-opposite" class="badge bg-info"></span></p><p><strong>綜卦：</strong><span id="hex-reversed" class="badge bg-info"></span></p></div></div></div><div class="visual-panel"><h3>本卦聖象圖</h3><div id="hexagram-diagram" class="diagram"></div></div></div>
+                <div class="line-text-box"><h4>動爻爻辭指引</h4><p id="res-line-text">正在讀取爻辭...</p></div>
+                <button id="reveal-prompt-btn" class="btn-ai" type="button" aria-expanded="false">🤖 AI 解卦</button>
+                <p class="ai-note">需要更深入的白話解析時，再展開完整 Prompt。</p>
+            </section>
 
-        <section id="prompt-section" class="card prompt-section hidden">
-            <h2>三、AI 解卦 Prompt 產生器</h2>
-            <p class="tip">下方經文已整合您的卦象，複製後即可貼至大語言模型進行深度解析。</p>
-            
-            <textarea id="prompt-content" readonly rows="12"></textarea>
-            
-            <div class="action-buttons">
-                <button id="copy-btn" class="btn btn-success">📋 複製完整 Prompt</button>
-            </div>
-
-            <div class="ai-links">
-                <p>快速前往 AI 平台：</p>
-                <div class="ai-grid">
-                    <a href="https://chatgpt.com/" target="_blank" class="ai-btn chatgpt">Open ChatGPT</a>
-                    <a href="https://claude.ai/" target="_blank" class="ai-btn claude">Open Claude</a>
-                    <a href="https://gemini.google.com/" target="_blank" class="ai-btn gemini">Open Gemini</a>
-                </div>
-            </div>
-        </section>
+            <section id="prompt-section" class="card prompt-section hidden" data-step="5">
+                <div class="section-heading"><span>伍</span><div><h2>AI 解卦 Prompt</h2><p>複製後可貼至你慣用的 AI 平台進行解析。</p></div></div>
+                <textarea id="prompt-content" readonly rows="14"></textarea>
+                <div class="action-buttons"><button id="copy-btn" class="btn btn-success">📋 複製完整 Prompt</button></div>
+                <div class="ai-links"><p>快速前往 AI 平台：</p><div class="ai-grid"><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="ai-btn chatgpt">ChatGPT</a><a href="https://claude.ai/" target="_blank" rel="noopener noreferrer" class="ai-btn claude">Claude</a><a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="ai-btn gemini">Gemini</a></div></div>
+            </section>
+        </main>
     </div>
-
-    <div id="toast" class="toast">複製成功！</div>
-
+    <div id="toast" class="toast" role="status">複製成功！</div>
     <script src="script.js"></script>
 </body>
 </html>
