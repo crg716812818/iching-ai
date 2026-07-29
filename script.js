@@ -106,16 +106,27 @@ const inquiryTemplates = [
     { id: 'health_custom', category: 'health', title: '自訂健康問題', subject: ['關注部位或對象', '相關狀況'], custom: true },
 
     { id: 'wealth_fortune', category: 'wealth', title: '最近財運如何', subject: ['收入來源', '財務目標'], template: '{person}想占問，目前整體財運{subjectPhrase}如何？以此起卦時間，在{location}起卦，請分析目前財運趨勢、正財、偏財、可能出現的機會、需要注意的風險，以及未來三個月財務發展。' },
-    { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計價格或成本'], template: '{person}想占問，若今日買入或持有{subject}，以此起卦時間，在{location}起卦，請分析未來三至六個月的走勢、是否適合繼續持有、是否適合加碼、最大的風險，以及整體投資結果是否有利。' },
+    { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計投入金額或持有成本'], template: '{person}想占問，若今日買入或繼續持有「{subjectValue}」，目前預計投入金額或持有成本為「{subjectExtra}」，以此起卦時間，在{location}起卦，請分析未來三至六個月的走勢、是否適合繼續持有、是否適合加碼、最大的風險，以及整體投資結果是否有利。' },
+    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及目前價格', '時間區間與目標價格'], template: '{person}想占問，今日「{subjectValue}」，在「{subjectExtra}」之前，股價是否可能上漲或下跌至指定目標價？以此起卦時間，在{location}起卦，請分析期間內的趨勢方向、抵達目標價的可能性、重要轉折、最大風險，以及適合觀察或採取行動的時機。' },
     { id: 'wealth_add', category: 'wealth', title: '是否適合加碼', subject: ['投資標的', '目前成本'], template: '{person}想占問，目前對{subject}加碼是否有利？以此起卦時間，在{location}起卦，請分析標的趨勢、加碼時機、資金風險、可能回報，以及未來三至六個月適合採取的策略。' },
     { id: 'wealth_stop', category: 'wealth', title: '是否適合停損', subject: ['投資標的', '目前成本或虧損'], template: '{person}想占問，目前對{subject}停損、續抱或減碼何者較有利？以此起卦時間，在{location}起卦，請分析後續趨勢、反彈機會、最大風險、決策時機，以及未來三至六個月的結果。' },
     { id: 'wealth_business', category: 'wealth', title: '創業財務前景', subject: ['產業', '預計投入金額'], template: '{person}想占問，投入創業{subjectPhrase}的財務前景是否有利？以此起卦時間，在{location}起卦，請分析市場機會、現金流、合作與資源、主要風險，以及未來六個月的發展與建議。' },
-    { id: 'wealth_custom', category: 'wealth', title: '自訂財富問題', subject: ['標的或項目', '金額或成本'], custom: true }
+    { id: 'wealth_home', category: 'wealth', title: '是否適合買房', subject: ['房屋地址或建案名稱', '總價、預算或預計購買時間'], template: '{person}想占問，購買「{subjectValue}」，相關預算與時程為「{subjectExtra}」，對目前的我是否合適且有利？以此起卦時間，在{location}起卦，請分析購屋時機、財務負擔、房屋與我的緣分、可能遇到的風險、未來保值發展，以及是否適合成交。' },
+    { id: 'wealth_custom', category: 'wealth', title: '自訂財富問題', subject: ['標的或項目', '金額或成本'], custom: true },
+
+    { id: 'life_home', category: 'life', title: '地址與居住吉凶', subject: ['完整地址或社區名稱', '預計居住者或居住期間'], template: '{person}想占問，位於「{subjectValue}」的住所，對「{subjectExtra}」是否適合居住？以此起卦時間，在{location}起卦，請分析此處與居住者的契合程度、居住後的整體運勢、家庭與身心影響、需要留意之處，以及長期居住是否吉利。' },
+    { id: 'life_move', category: 'life', title: '是否適合搬家', subject: ['預計搬往地點', '預計搬遷時間'], template: '{person}想占問，搬往「{subjectValue}」，並預計於「{subjectExtra}」搬遷，是否是合適的決定？以此起卦時間，在{location}起卦，請分析搬遷時機、新環境的助力、可能阻礙、對生活與家庭的影響，以及搬遷後三至六個月的發展。' },
+    { id: 'life_travel', category: 'life', title: '旅行是否順利', subject: ['目的地', '出發日期或旅行期間'], template: '{person}想占問，前往「{subjectValue}」並於「{subjectExtra}」進行的旅程是否順利？以此起卦時間，在{location}起卦，請分析行程整體趨勢、交通與安全、可能的阻礙、需要留意的時機，以及此行是否能達成預期目的。' },
+    { id: 'life_decision', category: 'life', title: '重要選擇與決定', subject: ['考慮中的選項', '希望決定的期限'], template: '{person}想占問，目前面對「{subjectValue}」的選擇，並希望在「{subjectExtra}」前做出決定，哪個方向更符合當下時運？以此起卦時間，在{location}起卦，請分析各方向的利弊、潛在阻礙、關鍵轉折、未來發展，以及最適合採取的行動。' },
+    { id: 'life_lost', category: 'life', title: '尋找遺失物品', subject: ['遺失物品', '最後看見的地點與時間'], template: '{person}想占問，遺失的「{subjectValue}」，最後於「{subjectExtra}」附近出現，是否有機會找回？以此起卦時間，在{location}起卦，請分析物品可能所在方向與環境、找回機會、應優先尋找之處、可能的協助者，以及適合採取的行動。' },
+    { id: 'life_family', category: 'life', title: '家庭關係與相處', subject: ['家人姓名或稱謂', '目前主要狀況'], template: '{person}想占問，與家人「{subjectValue}」之間目前面對「{subjectExtra}」的狀況，應如何改善？以此起卦時間，在{location}起卦，請分析彼此心態、問題根源、溝通阻礙、關係轉機，以及未來三個月最合適的相處方式。' },
+    { id: 'life_custom', category: 'life', title: '自訂生活問題', subject: ['相關地點或對象', '時間或背景'], custom: true }
 ];
 
 const inquiryCategories = [
     { id: 'love', icon: '♥', label: '感情' }, { id: 'career', icon: '▣', label: '事業' },
-    { id: 'health', icon: '✚', label: '健康' }, { id: 'wealth', icon: '◇', label: '財富' }
+    { id: 'health', icon: '✚', label: '健康' }, { id: 'wealth', icon: '◇', label: '財富' },
+    { id: 'life', icon: '⌂', label: '生活' }
 ];
 
 let activeCategory = 'love';
@@ -184,7 +195,13 @@ function updateInquiry(force = false) {
     const custom = document.getElementById('custom-question').value.trim() || '請在此寫下想問的問題';
     let text = activeTemplate.custom
         ? `${personDescription()}想占問：「${custom}」。以此起卦時間，在${currentLocation()}起卦，請依照梅花易數與易經象數派角度，分析事情目前狀況、未來發展趨勢、可能遇到的阻礙，以及最終結果與建議。`
-        : activeTemplate.template.replaceAll('{person}', personDescription()).replaceAll('{subject}', subject || activeTemplate.subject[0]).replaceAll('{subjectPhrase}', subjectPhrase).replaceAll('{location}', currentLocation());
+        : activeTemplate.template
+            .replaceAll('{person}', personDescription())
+            .replaceAll('{subject}', subject || activeTemplate.subject[0])
+            .replaceAll('{subjectValue}', value || activeTemplate.subject[0])
+            .replaceAll('{subjectExtra}', extra || activeTemplate.subject[1])
+            .replaceAll('{subjectPhrase}', subjectPhrase)
+            .replaceAll('{location}', currentLocation());
     const additional = document.getElementById('additional-info').value.trim();
     if (additional) text += ` 補充背景：${additional}。`;
     const question = document.getElementById('question');

@@ -389,7 +389,7 @@ textarea#prompt-content:focus { outline: none; border-color: var(--accent); box-
 .section-heading h2::before { display: none; }
 .section-heading p { color: var(--text-muted); font-size: .8rem; line-height: 1.55; }
 
-.category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 18px; position: relative; z-index: 1; }
+.category-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin-bottom: 18px; position: relative; z-index: 1; }
 .category-tab { appearance: none; border: 1px solid var(--border); background: rgba(255,255,255,.23); color: var(--text-muted); padding: 13px 6px; border-radius: 3px; font: inherit; cursor: pointer; transition: .2s ease; }
 .category-tab span { display: block; color: var(--accent); font-size: 1.15rem; line-height: 1.2; margin-bottom: 3px; }
 .category-tab:hover, .category-tab.active { color: var(--primary); border-color: var(--primary); background: var(--primary-light); transform: translateY(-1px); }
@@ -430,6 +430,7 @@ textarea#question { min-height: 180px; }
     .section-heading > span { width: 29px; height: 29px; flex-basis: 29px; }
     .section-heading h2 { font-size: 1.15rem; }
     .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .category-tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
     .category-tab { min-height: 64px; }
     .template-option { min-height: 48px; padding-top: 12px; padding-bottom: 12px; }
     .form-row { grid-template-columns: 1fr; gap: 0; }
