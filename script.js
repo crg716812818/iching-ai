@@ -107,7 +107,7 @@ const inquiryTemplates = [
 
     { id: 'wealth_fortune', category: 'wealth', title: '最近財運如何', subject: ['收入來源', '財務目標'], template: '{person}想占問，目前整體財運{subjectPhrase}如何？以此起卦時間，在{location}起卦，請分析目前財運趨勢、正財、偏財、可能出現的機會、需要注意的風險，以及未來三個月財務發展。' },
     { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計投入金額或持有成本'], template: '{person}想占問，若今日買入或繼續持有「{subjectValue}」，目前預計投入金額或持有成本為「{subjectExtra}」，以此起卦時間，在{location}起卦，請分析未來三至六個月的走勢、是否適合繼續持有、是否適合加碼、最大的風險，以及整體投資結果是否有利。' },
-    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及目前價格', '時間區間與目標價格'], template: '{person}想占問，今日「{subjectValue}」，在「{subjectExtra}」之前，股價是否可能上漲或下跌至指定目標價？以此起卦時間，在{location}起卦，請分析期間內的趨勢方向、抵達目標價的可能性、重要轉折、最大風險，以及適合觀察或採取行動的時機。' },
+    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及今日價格', '期限及目標價格'], placeholders: ['例如：2330 2500／台積電 2500／美股 NVDA 201', '例如：20260930之前 400；持有者亦可填 912.71 3股'], template: '{person}想占問，{stockTargetQuestion}以此起卦時間，在{location}起卦，{stockTargetAnalysis}' },
     { id: 'wealth_add', category: 'wealth', title: '是否適合加碼', subject: ['投資標的', '目前成本'], template: '{person}想占問，目前對{subject}加碼是否有利？以此起卦時間，在{location}起卦，請分析標的趨勢、加碼時機、資金風險、可能回報，以及未來三至六個月適合採取的策略。' },
     { id: 'wealth_stop', category: 'wealth', title: '是否適合停損', subject: ['投資標的', '目前成本或虧損'], template: '{person}想占問，目前對{subject}停損、續抱或減碼何者較有利？以此起卦時間，在{location}起卦，請分析後續趨勢、反彈機會、最大風險、決策時機，以及未來三至六個月的結果。' },
     { id: 'wealth_business', category: 'wealth', title: '創業財務前景', subject: ['產業', '預計投入金額'], template: '{person}想占問，投入創業{subjectPhrase}的財務前景是否有利？以此起卦時間，在{location}起卦，請分析市場機會、現金流、合作與資源、主要風險，以及未來六個月的發展與建議。' },
@@ -186,13 +186,72 @@ function currentLocation() {
     return location === 'other' ? (document.getElementById('custom-location').value.trim() || '所處地點') : location;
 }
 
+function buildStockTargetInquiry(value, extra) {
+    const stockInput = value.trim();
+    const targetInput = extra.trim();
+    const stockMatch = stockInput.match(/^(.*?)[\s,，]+(?:[$＄NTUS]*\$?\s*)?(-?\d[\d,]*(?:\.\d+)?)\s*$/i);
+    const holdingMatch = targetInput.match(/(\d+(?:\.\d+)?)\s*股/);
+    const dateMatch = targetInput.match(/\b((?:19|20)\d{2})[\/.-]?(\d{2})[\/.-]?(\d{2})\b/);
+    const formattedDate = dateMatch
+        ? `${dateMatch[1]}/${dateMatch[2]}/${dateMatch[3]}`
+        : '';
+    const targetWithoutDate = dateMatch
+        ? targetInput.replace(dateMatch[0], ' ')
+        : targetInput;
+    const targetMatches = [...targetWithoutDate.matchAll(/(?:[$＄NTUS]*\$?\s*)?(-?\d[\d,]*(?:\.\d+)?)/gi)];
+    const targetMatch = targetMatches.at(-1);
+
+    if (holdingMatch && !dateMatch) {
+        const holdingAmount = targetMatches
+            .map(match => match[1])
+            .find(amount => amount !== holdingMatch[1]);
+        const holdingDetail = holdingAmount ? `，持有成本或投入金額為 ${holdingAmount}` : '';
+        return {
+            question: `目前持有「${stockMatch?.[1].trim() || stockInput || '此投資標的'}」股票 ${holdingMatch[1]} 股${holdingDetail}，未來三至六個月是否適合繼續持有？`,
+            analysis: '請聚焦分析持有期間的整體趨勢、續抱或減碼的適合時機、主要風險，以及這筆持有部位的發展是否有利。'
+        };
+    }
+
+    if (!stockMatch || !targetMatch) {
+        const suppliedDetail = targetInput ? `，目前提供的持有資訊為「${targetInput}」` : '';
+        return {
+            question: `「${stockInput || '此投資標的'}」${suppliedDetail}，未來三至六個月是否適合繼續觀察或持有？`,
+            analysis: '請聚焦分析未來三至六個月的整體趨勢、繼續觀察或持有的主要風險、重要轉折，以及適合採取行動的時機。'
+        };
+    }
+
+    const stockName = stockMatch[1].trim();
+    const currentPrice = stockMatch[2];
+    const targetPrice = targetMatch[1];
+    const currentNumber = Number(currentPrice.replaceAll(',', ''));
+    const targetNumber = Number(targetPrice.replaceAll(',', ''));
+    const explicitDirection = targetInput.match(/上漲|漲至|看漲|下跌|跌至|看跌/)?.[0] || '';
+    const direction = explicitDirection
+        ? (explicitDirection.includes('跌') ? '下跌' : '上漲')
+        : targetNumber > currentNumber ? '上漲' : targetNumber < currentNumber ? '下跌' : '維持';
+    const deadline = formattedDate
+        || targetInput
+            .replace(targetMatch[0], '')
+            .replace(/上漲|漲至|看漲|下跌|跌至|看跌|期限|內|以前|之前|前|至|到/g, '')
+            .trim();
+    const deadlinePhrase = deadline ? `在 ${deadline} 前` : '在指定期限內';
+
+    return {
+        question: `「${stockName}」今日股價為 ${currentPrice}，${deadlinePhrase}是否可能${direction}至 ${targetPrice}？`,
+        analysis: `請聚焦分析期間內的${direction}趨勢、抵達 ${targetPrice} 的可能性、重要轉折、主要風險，以及適合觀察或採取行動的時機。`
+    };
+}
+
 function updateInquiry(force = false) {
     if (!activeTemplate) return;
     const value = document.getElementById('subject-value').value.trim();
     const extra = document.getElementById('subject-extra').value.trim();
-    const subject = [value, extra].filter(Boolean).join('（') + (value && extra ? '）' : '');
-    const subjectPhrase = subject ? `（${subject}）` : '';
+    const extraDisplay = extra && activeTemplate.subject[1].includes('生日') ? `${extra}生` : extra;
+    const subject = value ? `${value}${extraDisplay ? `（${extraDisplay}）` : ''}` : extraDisplay;
+    const subjectDetails = [value, extraDisplay].filter(Boolean).join('；');
+    const subjectPhrase = subjectDetails ? `（${subjectDetails}）` : '';
     const custom = document.getElementById('custom-question').value.trim() || '請在此寫下想問的問題';
+    const stockTargetInquiry = buildStockTargetInquiry(value, extra);
     let text = activeTemplate.custom
         ? `${personDescription()}想占問：「${custom}」。以此起卦時間，在${currentLocation()}起卦，請依照梅花易數與易經象數派角度，分析事情目前狀況、未來發展趨勢、可能遇到的阻礙，以及最終結果與建議。`
         : activeTemplate.template
@@ -200,6 +259,8 @@ function updateInquiry(force = false) {
             .replaceAll('{subject}', subject || activeTemplate.subject[0])
             .replaceAll('{subjectValue}', value || activeTemplate.subject[0])
             .replaceAll('{subjectExtra}', extra || activeTemplate.subject[1])
+            .replaceAll('{stockTargetQuestion}', stockTargetInquiry.question)
+            .replaceAll('{stockTargetAnalysis}', stockTargetInquiry.analysis)
             .replaceAll('{subjectPhrase}', subjectPhrase)
             .replaceAll('{location}', currentLocation());
     const additional = document.getElementById('additional-info').value.trim();
@@ -208,7 +269,7 @@ function updateInquiry(force = false) {
     if (force || question.dataset.userEdited !== 'true') question.value = text;
     inquiryConfirmed = false;
     document.getElementById('divination-confirm').classList.remove('confirmed');
-    document.getElementById('confirm-inquiry-btn').textContent = '確認，準備起卦';
+    document.getElementById('confirm-inquiry-btn').textContent = '內容正確，準備起卦';
     updateStepProgress();
 }
 
@@ -216,10 +277,13 @@ function selectTemplate(template) {
     activeTemplate = template;
     document.querySelectorAll('.template-option').forEach(button => button.classList.toggle('active', button.dataset.id === template.id));
     const [label, extraLabel] = template.subject;
+    const [valuePlaceholder = label, extraPlaceholder = extraLabel] = template.placeholders || [];
     document.getElementById('subject-label').textContent = label;
-    document.getElementById('subject-value').placeholder = label;
+    document.getElementById('subject-value').placeholder = valuePlaceholder;
+    document.getElementById('subject-value').title = valuePlaceholder;
     document.getElementById('subject-extra-label').textContent = extraLabel;
-    document.getElementById('subject-extra').placeholder = extraLabel;
+    document.getElementById('subject-extra').placeholder = extraPlaceholder;
+    document.getElementById('subject-extra').title = extraPlaceholder;
     const subjectUsesBirthday = extraLabel.includes('生日');
     document.getElementById('subject-extra').inputMode = subjectUsesBirthday ? 'numeric' : 'text';
     validateBirthday(document.getElementById('subject-extra'), document.getElementById('subject-extra-message'), subjectUsesBirthday);
@@ -269,7 +333,7 @@ function initializeInquiryBuilder() {
             event.target.dataset.userEdited = 'true';
             inquiryConfirmed = false;
             document.getElementById('divination-confirm').classList.remove('confirmed');
-            document.getElementById('confirm-inquiry-btn').textContent = '確認，準備起卦';
+            document.getElementById('confirm-inquiry-btn').textContent = '內容正確，準備起卦';
         }
         updateStepProgress();
     });

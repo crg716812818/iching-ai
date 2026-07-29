@@ -412,10 +412,11 @@ textarea#question { min-height: 180px; }
 .ritual-steps { width: fit-content; max-width: 100%; margin: 10px auto 4px; padding-left: 1.6rem; color: var(--text-main); font-size: .92rem; text-align: left; line-height: 2; }
 .divination-confirm { max-width: 360px; margin: 14px auto 18px; padding: 12px; border: 1px solid var(--border); background: rgba(255,255,255,.2); }
 .divination-confirm p { margin-bottom: 9px; color: var(--text-muted); font-size: .85rem; }
+.divination-confirm small { display: block; margin: -2px 0 10px; color: var(--text-soft); font-size: .72rem; line-height: 1.65; }
 .divination-confirm button { min-height: 44px; width: 100%; border: 1px solid var(--primary); border-radius: 3px; background: transparent; color: var(--primary); font: .88rem 'Noto Serif TC', serif; cursor: pointer; }
 .divination-confirm.confirmed { border-color: rgba(107,143,113,.45); background: rgba(107,143,113,.08); }
 .divination-confirm.confirmed button { border-color: var(--success); background: var(--success); color: var(--card-bg); }
-.divination-confirm:not(.confirmed) + .dice-cup { opacity: .48; filter: grayscale(.35); }
+.divination-confirm:not(.confirmed) ~ .dice-cup { opacity: .48; filter: grayscale(.35); }
 .btn-ai { width: 100%; margin-top: 20px; padding: 14px 18px; border: 1px solid var(--primary); border-radius: 3px; background: var(--primary); color: var(--card-bg); font: 1rem 'Noto Serif TC', serif; letter-spacing: .1em; cursor: pointer; box-shadow: 0 3px 12px var(--shadow-warm); }
 .btn-ai:hover { background: var(--primary-hover); }
 .ai-note { text-align: center; color: var(--text-soft); font-size: .78rem; margin-top: 8px; }

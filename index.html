@@ -51,14 +51,15 @@
                 <div class="section-heading"><span>參</span><div><h2>確認占問內容</h2><p>系統會依資料自動組成，你仍可在起卦前自由修改。</p></div></div>
                 <div class="form-group"><label for="question">此次真正用於起卦的內容</label><textarea id="question" rows="7" placeholder="請先選擇模板並填寫資料，系統會在這裡產生完整占問內容。" autocomplete="off"></textarea></div>
                 <div class="divine-container">
+                    <div id="divination-confirm" class="divination-confirm">
+                        <p>請確認：這是一個完整、明確，且只聚焦一件事的占問嗎？</p>
+                        <small>聚焦同一件事後，可同時了解現況、趨勢、風險與建議。</small>
+                        <button id="confirm-inquiry-btn" type="button">內容正確，準備起卦</button>
+                    </div>
                     <p class="hint">【靜心起卦】</p>
                     <ol class="ritual-steps"><li>吸氣吐氣，靜下心來</li><li>跟著上方題目默念一次</li><li>用手指按住法器左右移動</li></ol>
                     <p class="hint-or">或</p>
                     <button id="motion-btn" class="btn-motion hidden">點擊允許手機搖晃感應</button>
-                    <div id="divination-confirm" class="divination-confirm">
-                        <p>此次占問是否已完整，且只問一件事？</p>
-                        <button id="confirm-inquiry-btn" type="button">確認，準備起卦</button>
-                    </div>
                     <div id="dice-cup" class="dice-cup" role="button" tabindex="0" aria-label="按住並左右拖曳法器起卦"><div class="cup-body">🏮</div><div class="dice-container"><div class="die">⚀</div><div class="die">⚂</div><div class="die">⚄</div></div></div>
                 </div>
             </section>
