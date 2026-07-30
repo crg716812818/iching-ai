@@ -98,7 +98,7 @@ const inquiryTemplates = [
     { id: 'career_business', category: 'career', title: '是否適合創業', subject: ['產業', '合作對象'], template: '{person}想占問，目前與「{subjectExtra}」投入「{subjectValue}」創業是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'career_custom', category: 'career', title: '自訂事業問題', subject: ['公司或產業', '職位或對象'], custom: true },
 
-    { id: 'health_overall', category: 'health', title: '近期健康狀況', subject: ['關注部位', '症狀或狀況'], template: '{person}想占問，目前身體狀況是否需要特別注意？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'health_overall', category: 'health', title: '近期健康狀況', subject: ['關注部位', '症狀或狀況'], template: '{person}想占問，目前身體狀況其體用生剋、五行強弱如何？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'health_recovery', category: 'health', title: '恢復與療養趨勢', subject: ['病症或部位', '治療方式'], template: '{person}想占問，目前以「{subjectExtra}」治療「{subjectValue}」，未來三個月的恢復趨勢如何？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'health_family', category: 'health', title: '家人健康關懷', subject: ['家人姓名', '與當事人關係'], template: '{person}想占問，家人「{subjectValue}」（與當事人關係：{subjectExtra}）近期健康是否需要特別注意？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'health_exam', category: 'health', title: '檢查或治療是否順利', subject: ['檢查或治療項目', '醫療院所'], template: '{person}想占問，在「{subjectExtra}」進行「{subjectValue}」是否能順利完成？占問時間：{inquiryTime}，在{location}起卦。' },
