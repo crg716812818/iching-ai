@@ -107,7 +107,7 @@ const inquiryTemplates = [
 
     { id: 'wealth_fortune', category: 'wealth', title: '最近財運如何', subject: ['收入來源', '財務目標'], template: '{person}想占問，目前以「{subjectValue}」為收入來源，未來三個月的財運是否有利於達成「${subjectExtra}」的財務目標？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計投入金額或持有成本'], template: '{person}想占問，今日投入「${subjectExtra}」買入「{subjectValue}」是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
-    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及今日價格', '期限及目標價格'], placeholders: ['例如：2330 2500／台積電 2500／美股 NVDA 201', '例如：20260930之前 400；持有者亦可填 912.71 3股'], template: '{person}想占問，{stockTargetQuestion}占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及今日價格', '期限及目標價格'], placeholders: ['例如：2330 $2500／台積電 $2500／美股 NVDA $201', '例如：20260930之前 400'], template: '{person}想占問，{stockTargetQuestion}占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'wealth_add', category: 'wealth', title: '是否適合加碼', subject: ['投資標的', '目前成本'], template: '{person}想占問，目前持有成本為「${subjectExtra}」的「{subjectValue}」是否適合加碼？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'wealth_stop', category: 'wealth', title: '是否適合停損', subject: ['投資標的', '目前成本或虧損'], template: '{person}想占問，目前持有成本或虧損為「${subjectExtra}」的「{subjectValue}」是否適合停損？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'wealth_business', category: 'wealth', title: '創業財務前景', subject: ['產業', '預計投入金額'], template: '{person}想占問，目前投入「${subjectExtra}」從事「{subjectValue}」創業是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
