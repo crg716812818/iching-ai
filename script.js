@@ -665,8 +665,17 @@ ${reversedHexName}
 動爻爻辭：
 ${lineText}
 
+請從以下角度分析： 
+1. 目前狀況 
+2. 結果趨勢 
+3. 阻礙因素 
+4. 建議行動
+5. 直接回答問題
+
 請只針對上述唯一問題作答，不要延伸回答其他問題。
-請用白話中文直接解釋，不要過度神秘化，也不要建議為同一件事重新起卦。`;
+請用白話中文很直接的解釋，不要過度專業化。 
+問題的問法若不夠精確改善請給我建議。 
+重問請重新占卜。`;
 
     document.getElementById('prompt-content').value = generatedPrompt;
     document.getElementById('divination-meta').innerText = `${divinationTime} · ${divinationLocation}起卦`;
