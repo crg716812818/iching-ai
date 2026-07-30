@@ -125,7 +125,7 @@ const inquiryTemplates = [
 
 const inquiryCategories = [
     { id: 'love', icon: '♥', label: '感情' }, { id: 'career', icon: '▣', label: '事業' },
-    { id: 'health', icon: '✚', label: '健康' }, { id: 'wealth', icon: '◇', label: '財富' },
+    { id: 'health', icon: '✚', label: '健康' }, { id: 'wealth', icon: '$', label: '財富' },
     { id: 'life', icon: '⌂', label: '生活' }
 ];
 
