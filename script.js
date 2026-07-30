@@ -641,8 +641,6 @@ function executeDivination() {
 問題：
 ${questionText}
 
-起卦時間：${divinationTime}
-起卦地點：${divinationLocation}
 
 起卦結果：
 上卦：${upper}
