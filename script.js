@@ -84,42 +84,42 @@ const hexagramsDatabase = {
 // 占問分類與文案模板（純前端，不連接任何 AI 服務）
 // ==========================================
 const inquiryTemplates = [
-    { id: 'love_feeling', category: 'love', title: '對方的真實想法', subject: ['對方姓名', '對方生日'], template: '{person}想占問，{subject}目前對我的真實想法為何？以此起卦時間，在{location}起卦。' },
-    { id: 'love_future', category: 'love', title: '感情未來發展', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}的感情未來將如何發展？以此起卦時間，在{location}起卦。' },
-    { id: 'love_reconcile', category: 'love', title: '是否有機會復合', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}是否還有復合機會？以此起卦時間，在{location}起卦。' },
-    { id: 'love_confess', category: 'love', title: '是否適合告白', subject: ['對方姓名', '對方生日'], template: '{person}想占問，目前是否適合向{subject}表明心意？以此起卦時間，在{location}起卦。' },
-    { id: 'love_marriage', category: 'love', title: '婚姻與長期緣分', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}是否適合走向婚姻？以此起卦時間，在{location}起卦。' },
+    { id: 'love_feeling', category: 'love', title: '對方的真實想法', subject: ['對方姓名', '對方生日'], template: '{person}想占問，{subject}目前對我的真實想法為何？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'love_future', category: 'love', title: '感情未來發展', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}未來三個月的感情關係將如何發展？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'love_reconcile', category: 'love', title: '是否有機會復合', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}未來三個月是否有復合機會？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'love_confess', category: 'love', title: '是否適合告白', subject: ['對方姓名', '對方生日'], template: '{person}想占問，目前是否適合向{subject}表明心意？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'love_marriage', category: 'love', title: '婚姻與長期緣分', subject: ['對方姓名', '對方生日'], template: '{person}想占問，我與{subject}是否適合走向婚姻？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'love_custom', category: 'love', title: '自訂感情問題', subject: ['對方姓名', '對方生日'], custom: true },
 
-    { id: 'career_change', category: 'career', title: '是否適合轉換工作', subject: ['公司名稱', '職位或機會'], template: '{person}想占問，目前是否適合轉換工作{subjectPhrase}？以此起卦時間，在{location}起卦。' },
-    { id: 'career_stay', category: 'career', title: '是否應該留任', subject: ['公司名稱', '目前職位'], template: '{person}想占問，繼續留在目前工作{subjectPhrase}是否有利？以此起卦時間，在{location}起卦。' },
-    { id: 'career_interview', category: 'career', title: '面試與錄取機會', subject: ['公司名稱', '應徵職位'], template: '{person}想占問，應徵機會{subjectPhrase}的結果是否順利？以此起卦時間，在{location}起卦。' },
-    { id: 'career_promotion', category: 'career', title: '升遷與職涯發展', subject: ['公司名稱', '目前職位'], template: '{person}想占問，目前工作{subjectPhrase}是否有升遷機會？以此起卦時間，在{location}起卦。' },
-    { id: 'career_business', category: 'career', title: '是否適合創業', subject: ['產業', '合作對象'], template: '{person}想占問，投入創業計畫{subjectPhrase}是否適合？以此起卦時間，在{location}起卦。' },
+    { id: 'career_change', category: 'career', title: '是否適合轉換工作', subject: ['公司名稱', '職位或機會'], template: '{person}想占問，目前轉往「{subjectValue}」爭取「{subjectExtra}」的機會是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'career_stay', category: 'career', title: '是否應該留任', subject: ['公司名稱', '目前職位'], template: '{person}想占問，目前繼續留在「{subjectValue}」擔任「{subjectExtra}」是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'career_interview', category: 'career', title: '面試與錄取機會', subject: ['公司名稱', '應徵職位'], template: '{person}想占問，應徵「{subjectValue}」的「{subjectExtra}」職位是否能順利錄取？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'career_promotion', category: 'career', title: '升遷與職涯發展', subject: ['公司名稱', '目前職位'], template: '{person}想占問，目前在「{subjectValue}」擔任「{subjectExtra}」是否有升遷機會？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'career_business', category: 'career', title: '是否適合創業', subject: ['產業', '合作對象'], template: '{person}想占問，目前與「{subjectExtra}」投入「{subjectValue}」創業是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'career_custom', category: 'career', title: '自訂事業問題', subject: ['公司或產業', '職位或對象'], custom: true },
 
-    { id: 'health_overall', category: 'health', title: '近期健康狀況', subject: ['關注部位', '症狀或狀況'], template: '{person}想占問，目前身體狀況{subjectPhrase}是否需要特別注意？以此起卦時間，在{location}起卦。' },
-    { id: 'health_recovery', category: 'health', title: '恢復與療養趨勢', subject: ['病症或部位', '治療方式'], template: '{person}想占問，目前健康問題{subjectPhrase}未來三個月的恢復趨勢如何？以此起卦時間，在{location}起卦。' },
-    { id: 'health_family', category: 'health', title: '家人健康關懷', subject: ['家人姓名', '與當事人關係'], template: '{person}想占問，家人{subjectPhrase}近期健康是否需要特別留意？以此起卦時間，在{location}起卦。' },
-    { id: 'health_exam', category: 'health', title: '檢查或治療是否順利', subject: ['檢查或治療項目', '醫療院所'], template: '{person}想占問，即將進行的檢查或治療{subjectPhrase}是否順利？以此起卦時間，在{location}起卦。' },
-    { id: 'health_mind', category: 'health', title: '身心壓力與調養', subject: ['壓力來源', '持續時間'], template: '{person}想占問，目前身心壓力{subjectPhrase}應如何調整？以此起卦時間，在{location}起卦。' },
+    { id: 'health_overall', category: 'health', title: '近期健康狀況', subject: ['關注部位', '症狀或狀況'], template: '{person}想占問，目前身體狀況是否需要特別注意？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'health_recovery', category: 'health', title: '恢復與療養趨勢', subject: ['病症或部位', '治療方式'], template: '{person}想占問，目前以「{subjectExtra}」治療「{subjectValue}」，未來三個月的恢復趨勢如何？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'health_family', category: 'health', title: '家人健康關懷', subject: ['家人姓名', '與當事人關係'], template: '{person}想占問，家人「{subjectValue}」（與當事人關係：{subjectExtra}）近期健康是否需要特別注意？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'health_exam', category: 'health', title: '檢查或治療是否順利', subject: ['檢查或治療項目', '醫療院所'], template: '{person}想占問，在「{subjectExtra}」進行「{subjectValue}」是否能順利完成？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'health_mind', category: 'health', title: '身心壓力與調養', subject: ['壓力來源', '持續時間'], template: '{person}想占問，因「{subjectValue}」持續「{subjectExtra}」所產生的身心壓力應如何調整？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'health_custom', category: 'health', title: '自訂健康問題', subject: ['關注部位或對象', '相關狀況'], custom: true },
 
-    { id: 'wealth_fortune', category: 'wealth', title: '最近財運如何', subject: ['收入來源', '財務目標'], template: '{person}想占問，目前整體財運{subjectPhrase}如何？以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計投入金額或持有成本'], template: '{person}想占問，今日買入「{subjectValue}」（預計投入金額為「{subjectExtra}」）是否有利？以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及今日價格', '期限及目標價格'], placeholders: ['例如：2330 2500／台積電 2500／美股 NVDA 201', '例如：20260930之前 400；持有者亦可填 912.71 3股'], template: '{person}想占問，{stockTargetQuestion}以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_add', category: 'wealth', title: '是否適合加碼', subject: ['投資標的', '目前成本'], template: '{person}想占問，目前對{subject}加碼是否有利？以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_stop', category: 'wealth', title: '是否適合停損', subject: ['投資標的', '目前成本或虧損'], template: '{person}想占問，目前對{subject}停損是否有利？以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_business', category: 'wealth', title: '創業財務前景', subject: ['產業', '預計投入金額'], template: '{person}想占問，投入創業{subjectPhrase}的財務前景是否有利？以此起卦時間，在{location}起卦。' },
-    { id: 'wealth_home', category: 'wealth', title: '是否適合買房', subject: ['房屋地址或建案名稱', '總價、預算或預計購買時間'], template: '{person}想占問，購買「{subjectValue}」，相關預算與時程為「{subjectExtra}」，目前是否適合購買？以此起卦時間，在{location}起卦。' },
+    { id: 'wealth_fortune', category: 'wealth', title: '最近財運如何', subject: ['收入來源', '財務目標'], template: '{person}想占問，目前以「{subjectValue}」為收入來源，未來三個月的財運是否有利於達成「{subjectExtra}」的財務目標？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_stock', category: 'wealth', title: '是否適合買股票', subject: ['股票代號', '預計投入金額或持有成本'], template: '{person}想占問，今日投入「{subjectExtra}」買入「{subjectValue}」是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_stock_target', category: 'wealth', title: '股票目標價與漲跌', subject: ['股票名稱或代號及今日價格', '期限及目標價格'], placeholders: ['例如：2330 2500／台積電 2500／美股 NVDA 201', '例如：20260930之前 400；持有者亦可填 912.71 3股'], template: '{person}想占問，{stockTargetQuestion}占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_add', category: 'wealth', title: '是否適合加碼', subject: ['投資標的', '目前成本'], template: '{person}想占問，目前持有成本為「{subjectExtra}」的「{subjectValue}」是否適合加碼？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_stop', category: 'wealth', title: '是否適合停損', subject: ['投資標的', '目前成本或虧損'], template: '{person}想占問，目前持有成本或虧損為「{subjectExtra}」的「{subjectValue}」是否適合停損？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_business', category: 'wealth', title: '創業財務前景', subject: ['產業', '預計投入金額'], template: '{person}想占問，目前投入「{subjectExtra}」從事「{subjectValue}」創業是否有利？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'wealth_home', category: 'wealth', title: '是否適合買房', subject: ['房屋地址或建案名稱', '總價、預算或預計購買時間'], template: '{person}想占問，目前是否適合依「{subjectExtra}」的預算與時程購買「{subjectValue}」？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'wealth_custom', category: 'wealth', title: '自訂財富問題', subject: ['標的或項目', '金額或成本'], custom: true },
 
-    { id: 'life_home', category: 'life', title: '地址與居住吉凶', subject: ['完整地址或社區名稱', '預計居住者或居住期間'], template: '{person}想占問，位於「{subjectValue}」的住所，對「{subjectExtra}」是否適合居住？以此起卦時間，在{location}起卦。' },
-    { id: 'life_move', category: 'life', title: '是否適合搬家', subject: ['預計搬往地點', '預計搬遷時間'], template: '{person}想占問，搬往「{subjectValue}」，並預計於「{subjectExtra}」搬遷，是否是合適的決定？以此起卦時間，在{location}起卦。' },
-    { id: 'life_travel', category: 'life', title: '旅行是否順利', subject: ['目的地', '出發日期或旅行期間'], template: '{person}想占問，前往「{subjectValue}」並於「{subjectExtra}」進行的旅程是否順利？以此起卦時間，在{location}起卦。' },
-    { id: 'life_decision', category: 'life', title: '重要選擇與決定', subject: ['考慮中的選項', '希望決定的期限'], template: '{person}想占問，目前面對「{subjectValue}」的選擇，並希望在「{subjectExtra}」前做出決定，哪個方向更符合當下時運？以此起卦時間，在{location}起卦。' },
-    { id: 'life_lost', category: 'life', title: '尋找遺失物品', subject: ['遺失物品', '最後看見的地點與時間'], template: '{person}想占問，遺失的「{subjectValue}」，最後於「{subjectExtra}」附近出現，是否有機會找回？以此起卦時間，在{location}起卦。' },
-    { id: 'life_family', category: 'life', title: '家庭關係與相處', subject: ['家人姓名或稱謂', '目前主要狀況'], template: '{person}想占問，與家人「{subjectValue}」之間目前面對「{subjectExtra}」的狀況，應如何改善？以此起卦時間，在{location}起卦。' },
+    { id: 'life_home', category: 'life', title: '地址與居住吉凶', subject: ['完整地址或社區名稱', '預計居住者或居住期間'], template: '{person}想占問，位於「{subjectValue}」的住所是否適合「{subjectExtra}」居住？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'life_move', category: 'life', title: '是否適合搬家', subject: ['預計搬往地點', '預計搬遷時間'], template: '{person}想占問，預計於「{subjectExtra}」搬往「{subjectValue}」是否合適？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'life_travel', category: 'life', title: '旅行是否順利', subject: ['目的地', '出發日期或旅行期間'], template: '{person}想占問，於「{subjectExtra}」前往「{subjectValue}」旅行是否順利？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'life_decision', category: 'life', title: '重要選擇與決定', subject: ['考慮中的選項', '希望決定的期限'], template: '{person}想占問，面對「{subjectValue}」的選擇，在「{subjectExtra}」前應選擇哪個方向？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'life_lost', category: 'life', title: '尋找遺失物品', subject: ['遺失物品', '最後看見的地點與時間'], template: '{person}想占問，最後於「{subjectExtra}」看見的「{subjectValue}」是否有機會找回？占問時間：{inquiryTime}，在{location}起卦。' },
+    { id: 'life_family', category: 'life', title: '家庭關係與相處', subject: ['家人姓名或稱謂', '目前主要狀況'], template: '{person}想占問，我與家人「{subjectValue}」目前因「{subjectExtra}」產生的關係問題應如何改善？占問時間：{inquiryTime}，在{location}起卦。' },
     { id: 'life_custom', category: 'life', title: '自訂生活問題', subject: ['相關地點或對象', '時間或背景'], custom: true }
 ];
 
@@ -186,6 +186,13 @@ function currentLocation() {
     return location === 'other' ? (document.getElementById('custom-location').value.trim() || '所處地點') : location;
 }
 
+function formatInquiryTime(date = new Date()) {
+    return new Intl.DateTimeFormat('zh-TW', {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', hour12: true
+    }).format(date);
+}
+
 function buildStockTargetInquiry(value, extra) {
     const stockInput = value.trim();
     const targetInput = extra.trim();
@@ -245,19 +252,17 @@ function updateInquiry(force = false) {
     const extra = document.getElementById('subject-extra').value.trim();
     const extraDisplay = extra && activeTemplate.subject[1].includes('生日') ? `${extra}生` : extra;
     const subject = value ? `${value}${extraDisplay ? `（${extraDisplay}）` : ''}` : extraDisplay;
-    const subjectDetails = [value, extraDisplay].filter(Boolean).join('；');
-    const subjectPhrase = subjectDetails ? `（${subjectDetails}）` : '';
     const custom = document.getElementById('custom-question').value.trim() || '請在此寫下想問的問題';
     const stockTargetInquiry = buildStockTargetInquiry(value, extra);
     let text = activeTemplate.custom
-        ? `${personDescription()}想占問：「${custom}」。以此起卦時間，在${currentLocation()}起卦。`
+        ? `${personDescription()}想占問：「${custom}」。占問時間：${formatInquiryTime()}，在${currentLocation()}起卦。`
         : activeTemplate.template
             .replaceAll('{person}', personDescription())
             .replaceAll('{subject}', subject || activeTemplate.subject[0])
             .replaceAll('{subjectValue}', value || activeTemplate.subject[0])
             .replaceAll('{subjectExtra}', extra || activeTemplate.subject[1])
             .replaceAll('{stockTargetQuestion}', stockTargetInquiry.question)
-            .replaceAll('{subjectPhrase}', subjectPhrase)
+            .replaceAll('{inquiryTime}', formatInquiryTime())
             .replaceAll('{location}', currentLocation());
     const additional = document.getElementById('additional-info').value.trim();
     if (additional) text += ` 補充背景：${additional}。`;
